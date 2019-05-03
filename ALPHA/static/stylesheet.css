@@ -1,0 +1,29 @@
+/* stylesheet.css */
+
+table {
+    background-color: white;
+}
+h1{
+    font: 50px "Arial Black", Gadget, sans-serif;
+    color: blue;
+    text-align: center;
+    font-weight:bold;
+}
+body {
+    text-align:center;
+    font-family:sans-serif;
+}
+
+#postInfo{
+    width: 50%;
+    margin: auto;
+    background-color:#f9f9e3;
+}
+#postHeader{
+    text-align: left;
+    background-color:#e8d988;
+}
+#tipTitle{
+    color:blue;
+    font-weight:bold;
+}
