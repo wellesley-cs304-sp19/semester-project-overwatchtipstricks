@@ -1,7 +1,11 @@
 /* stylesheet.css */
-
+@font-face {
+  font-family: postTitlefont;
+  src: url("OhMaria-Bold-Italic.woff");
+}
 table {
     background-color: white;
+    margin:auto;
 }
 h1{
     font: 50px "Arial Black", Gadget, sans-serif;
@@ -14,16 +18,43 @@ body {
     font-family:sans-serif;
 }
 
+th{
+    
+    text-align: left;
+}
 #postInfo{
     width: 50%;
-    margin: auto;
     background-color:#f9f9e3;
+    border-radius:15px;
+    
 }
 #postHeader{
     text-align: left;
     background-color:#e8d988;
+    border-radius:15px 15px 0px 0px;
+    padding: 15px;
 }
 #tipTitle{
-    color:blue;
     font-weight:bold;
+    font: 35px postTitleFont, Gadget, sans-serif;
+}
+#postText{
+    padding-left: 10%;
+    padding-right:10%;
+}
+
+
+.login{
+    background-color:#E6E6FA;
+    padding:7px;
+    margin:5px;
+}
+.login input[type=text]{
+    margin:5px;
+}
+.login input[type=password]{
+    margin:3px;
+}
+input:focus{
+  background-color: #edefd7;
 }
