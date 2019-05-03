@@ -9,14 +9,42 @@
 
 
 
-<form method="POST" action="/addPost/">
-    <p><label> Post title 
-        <input type="text" name="title" size="30" placeholder="Post title">
-    </label></p> 
+<form method="POST" action="/addPost/" enctype="multipart/form-data">
     
-    <p><textarea id="post-text" name="post-text" rows="20" cols="75" placeholder="Enter post content here..."></textarea></p>
-  <br>
-  <input id="addPostButton" name="submit" type="submit" value="Add Post">
+    <table align="center">
+        <tr><td><label for="tipTitle">Title: </label></td>
+            <td><input id="tipTitle" type="text" name="title" size="30" placeholder="Post title"></td></tr>
+        <tr><td><label for="tipHero">Hero: </label></td>
+            <!-- heros could maybe be in a loop from a variable somewhere?? -->
+          <td><select id= "tipHero" name="hero">
+                <option value="Ashe">Ashe</option>
+                <option value="Bastion">Bastion</option>
+                <option value="Doomfist">Doomfist</option>
+                <option value="Genji">Genji</option></select></td></tr>
+                
+        <tr><td><label for="tipMap">Map: </label></td>
+          <td><select id= "tipMap" name="map">
+                <option value="Hanamura">Hanamura</option>
+                <option value="Horizon Lunar Colony">Horizon Lunar Colony</option>
+                <option value="Paris">Paris</option>
+                <option value="Temple of Anubis">Temple of Anubis</option></select></td></tr>
+                
+        <tr><td>Difficulty: </td>
+            <td><label><input type="radio" name="diff" value="Beginner" checked> Beginner</label>
+                <label><input type="radio" name="diff" value="Intermediate"> Intermediate</label>
+                <label><input type="radio" name="diff" value="Advanced"> Advanced</label>
+                <label><input type="radio" name="diff" value="Expert"> Expert</label></td></tr>
+                
+        <tr><td><label for"img">Image Upload: </label></td>
+            <td><input type="file" name="img"></td></tr>
+        
+        <tr><td><label for="tipText">Discription: </label></td>
+            <td><textarea id="tipText" name="text" rows="20" cols="75" placeholder="Enter post content here..."></textarea></td></tr>
+         
+
+        <tr><td><input id="addPostButton" name="submit" type="submit" value="Add Post"></td></tr>
+    </table>
+ 
 </form> 
 
 {% endblock %}
