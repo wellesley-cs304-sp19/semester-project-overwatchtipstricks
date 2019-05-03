@@ -68,7 +68,18 @@ def addPost():
     return render_template('postTipOrTrick.html')
     
 
+@app.route('/search/', methods=['GET','POST'])
+def search():
+    if request.method == 'POST' and request.form['submit'] == 'Search':
+        searchTerm = request.form.get('search')
+        print searchTerm
+        flash("search message: " + searchTerm)
+        conn = tt.getConn('ovw')
+        searchResults =  tt.getSearchResults(conn, searchTerm)
+
+    return redirect(url_for('home'))
 
 if (__name__ == '__main__'):
     app.debug = True
+    
     app.run('0.0.0.0', 8081)

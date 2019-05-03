@@ -1,0 +1,24 @@
+  {% extends "base.html" %}
+ 
+{% block content %}
+<div class='tip-list'>
+        <table>
+            {% for tip in tips %}
+            <table id="postInfo">
+                <th id="postHeader">
+                    Tip #{{tip.tipID}} {% if tip.datePosted %} {{tip.datePosted}} {% endif %}
+                </th>
+                <tr>
+                    <td>
+                    {% if tip.title %} 
+                    <p id="tipTitle">{{tip.title}}</p>
+                    {% endif %}
+                    <br>
+                    {{tip.postText}}
+                    </td>
+                </tr>
+            </table>
+            {% endfor %}
+        </table>
+</div>
+ {% endblock %}
