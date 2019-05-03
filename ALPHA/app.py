@@ -72,11 +72,11 @@ def addPost():
 def search():
     if request.method == 'POST' and request.form['submit'] == 'Search':
         searchTerm = request.form.get('search')
-        print searchTerm
         flash("search message: " + searchTerm)
         conn = tt.getConn('ovw')
-        searchResults =  tt.getSearchResults(conn, searchTerm)
+        tips =  tt.getSearchResults(conn, searchTerm)
 
+        return render_template('search.html', tips=tips)
     return redirect(url_for('home'))
 
 if (__name__ == '__main__'):
