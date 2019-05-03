@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %} <h2>Trick #{{trick.number}}: {{trick.title}}</h2> {% endblock %}
+
+{% block content %}
+
+<p>Posted by:{{trick.posterID}} </p>
+<p>{{trick.date}}</p>
+<br>
+<p>Character: {{trick.character}}</p>
+<p>Map: {{trick.map}}</p>
+
+
+{% endblock %}
