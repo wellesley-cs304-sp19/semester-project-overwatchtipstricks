@@ -38,4 +38,10 @@ def getTips(conn):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips')
     return curs.fetchall()
-    
+
+def getSearchResults(conn, query):
+    '''return all the relevant search results'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    curs.execute('''select * from tips 
+    where postText like %s''', ('%' + query + '%',))
+    return curs.fetchall()
