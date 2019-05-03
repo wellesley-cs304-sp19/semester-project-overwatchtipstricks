@@ -10,9 +10,20 @@
 </head>
 <body>
 
-<!--NOTE FROM ANNA: maybe add the search bar here?-->
+<table class="header">
+    <tr>
+        <td>
+            <img src="../static/ott logo.png" alt="Overwatch Tips and Tricks Database Logo" width=80% align=left style="display:block; margin-bottom:20px">
+        </td>
+        <td>
+            <form method=post action="" class="login">
+            <div><label for="loginname">User: <input type=text name="loginname"></label></div>
+            <div><label for="loginpass">Pass: <input type=password name="loginpass"></label></div>
+            <div><input type="submit" name="submit" value="Login"></div>
+        </td>
+    </tr>
+</table>
 
-<h1>Overwatch Tips and Tricks Database</h1>
 
 {% block flash_msg %} 
 {% with messages = get_flashed_messages() %}
@@ -32,12 +43,8 @@
    </form>
 
 {% else %}
-
-   <form method=post action="">
-        <p><label for="loginname">User: <input type=text name="loginname"></label>
-        <p><label for="loginpass">Pass: <input type=password name="loginpass"></label>
-        <p><input type="submit" name="submit" value="Login">
-  </form>
+    
+   
  
 {% endif %}
 
