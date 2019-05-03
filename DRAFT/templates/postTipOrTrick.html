@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{# additional stuff for the head #}
+{% block headstuff %}
+    <meta name=author content="Emma Lurie">
+{% endblock %}
+
+{% block content %}
+
+
+
+<form method="POST" action="/addPost/">
+    <p><label> Post title 
+        <input type="text" name="title" size="30" placeholder="Post title">
+    </label></p> 
+    
+    <p><textarea id="post-text" name="post-text" rows="20" cols="75" placeholder="Enter post content here..."></textarea></p>
+  <br>
+  <input id="addPostButton" type="submit" value="Add Post">
+</form> 
+
+{% endblock %}

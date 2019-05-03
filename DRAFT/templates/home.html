@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>Welcome to the Overwatch Tips and Tricks Database!</p>
+<p>We hope this becomes your one stop for all your gaming questions.</p>
+
+<div id="tip-of-the-day">
+    
+    <h3> Today's Tip: </h3>
+    {% if today %}
+    <p>{{today.title}}</p>
+    <p>by: {{today.uID}} <italics>on </italics>{{tip.datePosted}}</p>
+    <p>{{today.text}}</p>
+    {% endif %}
+    
+</div>
+
+<h3><a href= '/addPost/'>Post a Tip!</a></h3>
+
+<div class='tip-list'>
+    <h3>Latest Tips and Tricks:</h3>
+    <form method=post action="">
+        <table>
+            {% for tip in tips %}
+            <table id="postInfo">
+                <th id="postHeader">
+                    Tip #{{tip.tipID}} {% if tip.datePosted %} {{tip.datePosted}} {% endif %}
+                </th>
+                <tr>
+                    <td>
+                    {% if tip.title %} 
+                    <p id="tipTitle">{{tip.title}}</p>
+                    {% endif %}
+                    <br>
+                    {{tip.postText}}
+                    </td>
+                </tr>
+            </table>
+            {% endfor %}
+        </table>
+     </form>
+</div>
+ 
+ {% endblock %}
