@@ -1,4 +1,11 @@
-{% extends "base.html" %}
+
+  <div class="search-container">
+    <form method="POST" action="/search/" enctype="multipart/form-data">
+      <label for="search bar"> <input type="text" name='search' placeholder="Search..."></label>
+      <input id="searchButton" name="submit" type="submit" value="Search">
+    </form>
+  </div>
+  {% extends "base.html" %}
 
 {% block content %}
 <p>Welcome to the Overwatch Tips and Tricks Database!</p>
