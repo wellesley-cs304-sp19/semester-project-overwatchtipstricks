@@ -33,15 +33,49 @@ def insertPost(conn, tip_dict):
     conn.commit()
     return "success"
         
-#returns all tips in the database
+
 def getTips(conn):
+    '''returns all tips in the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips')
     return curs.fetchall()
 
-def getSearchResults(conn, query):
+def getSearchResults(conn, filter_dict):
     '''return all the relevant search results'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
-    curs.execute('''select * from tips 
-    where postText like %s''', ('%' + query + '%',))
+
+
+    #create list of filter clauses
+    clauses = []
+    if filter_dict['mapName'] != 'All':
+        clauses.append("map = '%s'" % filter_dict['mapName'])
+        
+    if filter_dict['heroName'] != 'All':
+        clauses.append("hero = '%s'" % filter_dict['heroName'])
+        
+    if filter_dict['difficulty'] != 'All':
+        clauses.append("difficulty = '%s'" % filter_dict['difficulty'])
+    
+    if filter_dict['searchTerm'] != '':
+        clauses.append("postText like '%s'" % ('%' + filter_dict['searchTerm'] + '%',))
+    
+    #concatenate clauses lists into sql query string
+
+    if len(clauses) == 0: 
+        queryString = 'select * from tips;'
+    
+    elif len(clauses) == 1:
+        queryString = "select * from tips where " + clauses[0]  + ";"
+        
+    else: 
+        queryString =  "select * from tips where " + clauses[0] + " and " + " and ".join(clauses[1:]) + ";"
+    
+    #execute queryString
+    curs.execute(queryString)
     return curs.fetchall()
+
+if __name__ == '__main__':
+    conn= getConn('ovw')
+    #print len(getSearchResults(conn, {'mapName': 'sdfds', 'difficulty': 'All',
+    #'heroName': 'All', 'searchTerm': 'kill'}))
+        
