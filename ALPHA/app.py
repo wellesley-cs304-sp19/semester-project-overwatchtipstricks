@@ -79,6 +79,11 @@ def search():
         return render_template('search.html', tips=tips)
     return redirect(url_for('home'))
 
+@app.route('/login',methods=['GET','POST'])
+def login():
+    return redirect(url_for('home'))
+    
+    
 if (__name__ == '__main__'):
     app.debug = True
     
