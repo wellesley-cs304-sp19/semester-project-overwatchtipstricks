@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+
+  {% extends "base.html" %}
 
 {% block content %}
 <p>Welcome to the Overwatch Tips and Tricks Database!</p>
@@ -31,11 +32,20 @@
                     {% if tip.title %} 
                     <p id="tipTitle">{{tip.title}}</p>
                     {% endif %}
-                    <br>
-                    {{tip.postText}}
+                    <p id="postText">{{tip.postText}}</p>
+                    
+                    </td>
+                    
+                </tr>
+                <tr id="navButtons">
+                    <td>
+                        <label class="more">
+                            <input type="image" align=right id="moreInfoImage" width=35px height=20px src="../static/arrow icon.png " alt="more info icon" />
+                        </label>
                     </td>
                 </tr>
             </table>
+            <br>
             {% endfor %}
         </table>
      </form>

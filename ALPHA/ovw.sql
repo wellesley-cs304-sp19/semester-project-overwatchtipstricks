@@ -33,12 +33,12 @@ CREATE TABLE tips (
     'Mei','Pharah','Reaper','Soldier:76','Sombra','Symmetra','Torbjörn',
     'Tracer','Widowmaker','D.Va','Orisa','Reinhardt','Roadhog','Winston',
     'Wrecking Ball','Zarya','Ana','Baptiste','Bridgette','Lúcio','Mercy',
-    'Moira','Zenyatta','General') DEFAULT 'General',
+    'Moira','Zenyatta','All') DEFAULT 'All',
     
     map enum('Hanamura','Horizon Lunar Colony','Paris','Temple of Anubis',
     'Volskaya Industries','Dorado','Junkertown','Rialto','Route 66',
     'Watchpoint: Gibralter','Blizzard World','Eichenwalde','Hollywood',
-    'Kings Row','Numbani','Busan','Ilios','Lijang Tower','Nepal,Oasis','General') DEFAULT 'General',
+    'Kings Row','Numbani','Busan','Ilios','Lijang Tower','Nepal,Oasis','All') DEFAULT 'All',
     
     difficulty enum('Beginner', 'Intermediate', 'Advanced', 'Expert') DEFAULT 'Beginner',
     datePosted datetime DEFAULT NULL,

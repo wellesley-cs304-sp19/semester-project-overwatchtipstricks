@@ -1,4 +1,4 @@
-
+# coding=utf-8
 
 from flask import (Flask, url_for, render_template, request, flash, redirect, session, jsonify)
 import tt, os, imghdr
@@ -68,7 +68,41 @@ def addPost():
     return render_template('postTipOrTrick.html')
     
 
+@app.route('/search/', methods=['GET','POST'])
+def search():
+    if request.method == 'POST' and request.form['submitSearch'] == 'Search':
+        conn = tt.getConn('ovw')
+
+        filter_dict = {'searchTerm' : request.form.get('search'), 
+        'mapName': request.form.get('maps'),
+        'heroName': request.form.get('heroes'),
+        'difficulty': request.form.get('difficulty')}
+
+        print filter_dict
+        tips =  tt.getSearchResults(conn, filter_dict)
+        print tips
+        if len(tips) == 0:
+            flash('''We're sorry, we don't have any tips matching:
+                '%s' 
+        Map: %s 
+        Hero: %s
+        Difficulty: %s''' % (filter_dict['searchTerm'], 
+        filter_dict['mapName'], filter_dict['heroName'],
+        filter_dict['difficulty']))
+            
+        else: 
+            flash('''Displaying results for: '%s' 
+        Map: %s 
+        Hero: %s
+        Difficulty: %s''' % (filter_dict['searchTerm'], 
+        filter_dict['mapName'], filter_dict['heroName'],
+        filter_dict['difficulty']))
+        
+        
+        return render_template('search.html', tips=tips)
+    return redirect(url_for('home'))
 
 if (__name__ == '__main__'):
     app.debug = True
+    
     app.run('0.0.0.0', 8081)
