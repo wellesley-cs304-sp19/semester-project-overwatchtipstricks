@@ -39,6 +39,12 @@ def getTips(conn):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips')
     return curs.fetchall()
+    
+def getTip(conn, tID):
+    '''Returns a specific tip from the database'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    curs.execute('select * from tips where tipID = %s', (tID,))
+    return curs.fetchone()
 
 def getSearchResults(conn, filter_dict):
     '''return all the relevant search results'''
