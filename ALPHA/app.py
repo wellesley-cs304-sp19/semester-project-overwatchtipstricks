@@ -100,7 +100,7 @@ def search():
         
         
         return render_template('search.html', tips=tips)
-    return redirect(url_for('home'))
+    return redirect(url_for('search'))
 
 if (__name__ == '__main__'):
     app.debug = True
