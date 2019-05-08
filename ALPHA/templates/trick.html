@@ -15,4 +15,15 @@
 <br>
 <p>{{trick.postText}}
 
+<form method="POST" action={{url_for('tipPage', tipID=trick.tipID)}} enctype="multipart/form-data" id="commentForm">
+    <table id="commentTable" align="center"> 
+    <tr><label for="comment box" >
+            <td><textarea name="commentText" rows="10" cols="75" placeholder="Enter comment here...">
+                
+            </textarea></td></tr>
+</label>
+        <tr><td><input id="addCommentButton" name="addComment" type="submit" value="Add Comment"></td></tr>
+    </table>
+
+</form>
 {% endblock %}

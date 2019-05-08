@@ -109,9 +109,21 @@ def search():
 def tipPage(tipID):
     conn = tt.getConn('ovw')
     tip = tt.getTip(conn, tipID)
+    
+    if request.method == 'POST' and request.form['addComment'] == 'Add Comment':
+        uID = 1 #Need to update this once login has been implemented
+        commentText = request.form.get("commentText")
+        m = tt.insertComment(conn, {'uID': uID, 'tipID': tipID, 'commentText': commentText})
+        if m == 'success':
+            flash('Your comment has been added to the database')
+        else: 
+            flash("Your comment was not able to be added to the database")
+
+    
     return render_template('trick.html', trick = tip)
     
-
+    
+    
 if (__name__ == '__main__'):
     app.debug = True
     

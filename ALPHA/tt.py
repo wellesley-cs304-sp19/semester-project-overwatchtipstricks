@@ -32,7 +32,17 @@ def insertPost(conn, tip_dict):
             (title, text, image, hero, mapName, difficulty, datePosted))
     conn.commit()
     return "success"
-        
+
+def insertComment(conn, comment_dict):
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    datePosted = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # if image and difficulty: 
+    curs.execute('''insert into comments(uID, tipID, commentText, datePosted) 
+                    values 
+                    (%s, %s, %s, %s);''', 
+            (comment_dict['uID'], comment_dict['tipID'], comment_dict['commentText'], datePosted))
+    conn.commit()
+    return "success"
 
 def getTips(conn):
     '''returns all tips in the database'''
