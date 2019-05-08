@@ -21,6 +21,9 @@ def home():
     if request.method == 'POST' and request.form['submit'] == 'Login':
         flash("Login is not yet implemented")
         
+    if request.method == 'POST' and request.form['submit'] == 'MoreInfo':
+        flash("Login is not yet implemented")
+        
     '''Direct to home page'''
     conn = tt.getConn('ovw') 
     tips = tt.getTips(conn)
@@ -48,7 +51,7 @@ def addPost():
                 raise Exception('Not a JPEG, GIF or PNG: {}'.format(mime_type))
             filename = secure_filename('{}.{}'.format(IDnum,mime_type))
             pathname = os.path.join(app.config['UPLOADS'],filename)
-            f.save(pathname)
+            #f.save(pathname)
             img = f
         except Exception as err:
             flash('Image Upload Failed {why}'.format(why=err))
@@ -101,6 +104,13 @@ def search():
         
         return render_template('search.html', tips=tips)
     return redirect(url_for('home'))
+    
+@app.route('/tip/<tipID>', methods=['GET','POST'])
+def tipPage(tipID):
+    conn = tt.getConn('ovw')
+    tip = tt.getTip(conn, tipID)
+    return render_template('trick.html', trick = tip)
+    
 
 if (__name__ == '__main__'):
     app.debug = True
