@@ -12,8 +12,5 @@ into table tips
 fields terminated by '\t'
 lines terminated by '\n'
 IGNORE 1 ROWS
-(@var_datePosted)
-SET datePosted = STR_TO_DATE(@var_datePosted,"%Y-%m-%d");
--- date posted isn't working 
 
 
