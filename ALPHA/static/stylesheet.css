@@ -37,6 +37,7 @@ th{
 #tipTitle{
     font-weight:bold;
     font: 35px postTitleFont, Gadget, sans-serif;
+    text-align:center;
 }
 #postText{
     padding-left: 10%;
