@@ -50,11 +50,18 @@ def getTips(conn):
     curs.execute('select * from tips')
     return curs.fetchall()
     
-def getTip(conn, tID):
+def getTip(conn, tipID):
     '''Returns a specific tip from the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
-    curs.execute('select * from tips where tipID = %s', (tID,))
+    curs.execute('select * from tips where tipID = %s', (tipID,))
     return curs.fetchone()
+    
+def getComments(conn, tipID):
+    '''Returns comments relevant to a given tip from the database'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    curs.execute('select commentText, datePosted, username from comments inner join user using (uID) where tipID = %s', (tipID,))
+    return curs.fetchall()
+
 
 def getSearchResults(conn, filter_dict):
     '''return all the relevant search results'''

@@ -15,7 +15,8 @@
 <br>
 <p>{{trick.postText}}
 
-<form method="POST" action={{url_for('tipPage', tipID=trick.tipID)}} enctype="multipart/form-data" id="commentForm">
+
+<form id="newComment" method="POST" action={{url_for('tipPage', tipID=trick.tipID)}} enctype="multipart/form-data" id="commentForm">
     <table id="commentTable" align="center"> 
     <tr><label for="comment box" >
             <td><textarea name="commentText" rows="10" cols="75" placeholder="Enter comment here...">
@@ -26,4 +27,17 @@
     </table>
 
 </form>
+
+<div class="comments">
+    <h3>User comments:</h3>
+    <table id="commentTable">
+        {% for comment in comments %}
+            <tr>
+            <td>On {{comment.datePosted}}, {{comment.username}} wrote: </td>
+              <td>{{comment.commentText}}</td>  
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
 {% endblock %}

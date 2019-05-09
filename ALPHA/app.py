@@ -110,6 +110,7 @@ def tipPage(tipID):
     conn = tt.getConn('ovw')
     tip = tt.getTip(conn, tipID)
     
+    
     if request.method == 'POST' and request.form['addComment'] == 'Add Comment':
         uID = 1 #Need to update this once login has been implemented
         commentText = request.form.get("commentText")
@@ -118,9 +119,11 @@ def tipPage(tipID):
             flash('Your comment has been added to the database')
         else: 
             flash("Your comment was not able to be added to the database")
+        
+    #retreives comments for a given tip    
+    comments = tt.getComments(conn, tipID)
 
-    
-    return render_template('trick.html', trick = tip)
+    return render_template('trick.html', trick = tip, comments=comments)
     
     
     
