@@ -5,6 +5,7 @@
     <meta name=author content="Anna Farrell-Sherman and Hershel Carbajal-Rodriguez">
     <title>{% block title %} OverWatch Tips and Tricks {% endblock %}</title>
     <link rel="stylesheet" href="../static/stylesheet.css">
+    <link rel="icon" href="../static/ott favicon.png" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
     <script type="text/javascript" src="../static/addOptions.js"> </script>
     
@@ -43,10 +44,27 @@
         </td>
         <!-- Login --> 
         <td>
-            <form method=post action="" class="login">
-            <div><label for="loginname">User: <input type=text name="loginname"></label></div>
-            <div><label for="loginpass">Pass: <input type=password name="loginpass"></label></div>
-            <div><input type="submit" name="submit" value="Login"></div></form>
+            
+            {% if session['user'] %}
+            
+            <div class="userBar">
+                
+                Hello, Agent {{session['user']}}.
+                
+                <p><a href="{{url_for('addPost')}}">Post New Tip</ahref></p>
+            
+                <form method="POST" action="" class="logout">
+                    <div><input type="submit" name="submit" value="Logout"></div>
+                </form>
+             </div>
+
+            {% else %}
+            <form method="POST" action={{url_for('login')}} class="login">
+                <div><label for="loginname">User: <input type=text name="loginname"></label></div>
+                <div><label for="loginpass">Pass: <input type=password name="loginpass"></label></div>
+                <div><input type="submit" name="submit" value="Login"></div>
+            </form>
+            {% endif     %}
         </td>
     </tr>
     
@@ -65,17 +83,7 @@
 {% endblock %}
 
 
-{% if user %}
 
-   <form method="post" action="">
-        <input type="submit" name="logout" value="logout">
-   </form>
-
-{% else %}
-    
-   
- 
-{% endif %}
 
 {% block content %}
 {% endblock %}

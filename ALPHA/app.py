@@ -18,8 +18,14 @@ IDnum = '123123'
 @app.route('/', methods=['GET','POST'])
 def home():
     
+    
     if request.method == 'POST' and request.form['submit'] == 'Login':
-        flash("Login is not yet implemented")
+        print "TRYING TO LOGIN, REDIRECTING"
+        return redirect(url_for('login'))
+        
+    if request.method == 'POST' and request.form['submit'] == 'Logout':
+        print "TRYING TO LOGOUT, REDIRECTING"
+        return redirect(url_for('logout'))
         
     if request.method == 'POST' and request.form['submit'] == 'MoreInfo':
         flash("Login is not yet implemented")
@@ -133,11 +139,50 @@ def tipPage(tipID):
     #retreives comments for a given tip    
     comments = tt.getComments(conn, tipID)
 
-@app.route('/login',methods=['GET','POST'])
+@app.route('/login',methods=['POST'])
 def login():
-    return redirect(url_for('home'))
     
+    try:
+        username = request.form['loginname']
+        password = request.form['loginpass']
+        conn = tt.getConn('ovw')
+        
+        credentials = tt.checkLogin(conn,username,password)
+        
+        if credentials is None:
+            flash("Incorrect username or password. Please try again.")
+        else:
+            flash("Login successful. Welcome to OTT, Agent " + username +".")
+            session['user'] = username
+            session['logged_in'] = True
+            
+            return redirect(url_for('home'))
+        return redirect(url_for('home'))
+    except Exception as err:
+        flash('Whoops! Looks like you encountered the following form error: '+str(err))
+        return redirect( url_for('home') )
     
+
+@app.route('/logout')
+def logout():
+    
+    print "YOU MADE IT TO LOGOUT. TESTING." 
+    try:
+        if session['logged_in']:
+            
+            session.pop('user');
+            session.pop('logged_in')
+            flash("Successfully logged out. Until next time.")
+            return redirect(url_for('home'))
+            
+        flash("Sorry, you must be logged in to log out. Go figure.")
+        return redirect(url_for('home'))
+        
+    except Exception as err:
+        flash('Whoops! Looks like you encountered the following error: '+str(err))
+        return redirect( url_for('home') )
+        
+        
 if (__name__ == '__main__'):
     app.debug = True
     
