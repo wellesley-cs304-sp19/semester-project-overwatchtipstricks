@@ -32,6 +32,7 @@ def home():
 
 @app.route('/addPost/', methods=['GET','POST'])
 def addPost():
+    '''inserts a post to the database'''
     if request.method == 'POST' and request.form['submit'] == 'Add Post':
         title = request.form.get('title')
         text = request.form.get('text')
@@ -73,6 +74,9 @@ def addPost():
 
 @app.route('/search/', methods=['GET','POST'])
 def search():
+    '''searches database for entries in the database that match the 
+    given criteria in the search bar. Fitlers include; map name, hero name, 
+    difficulty, any text'''
     if request.method == 'POST' and request.form['submitSearch'] == 'Search':
         conn = tt.getConn('ovw')
 
@@ -81,9 +85,9 @@ def search():
         'heroName': request.form.get('heroes'),
         'difficulty': request.form.get('difficulty')}
 
-        print filter_dict
+        # print filter_dict
         tips =  tt.getSearchResults(conn, filter_dict)
-        print tips
+        # print tips
         if len(tips) == 0:
             flash('''We're sorry, we don't have any tips matching:
                 '%s' 
@@ -107,12 +111,18 @@ def search():
     
 @app.route('/tip/<tipID>', methods=['GET','POST'])
 def tipPage(tipID):
+    '''displays all associated data for a tip in a new webpage, 
+    including all of the comments left on a post. Users can also add comments
+    to the post on this page.'''
+    
     conn = tt.getConn('ovw')
+    
+    #get all data associated with a tip
     tip = tt.getTip(conn, tipID)
     
-    
+    #retrieves new comment data in form for the tip and inserts into DB.
     if request.method == 'POST' and request.form['addComment'] == 'Add Comment':
-        uID = 1 #Need to update this once login has been implemented
+        uID = 1 #!!! Need to update this once login has been implemented
         commentText = request.form.get("commentText")
         m = tt.insertComment(conn, {'uID': uID, 'tipID': tipID, 'commentText': commentText})
         if m == 'success':
