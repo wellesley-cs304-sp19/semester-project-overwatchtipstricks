@@ -1,0 +1,10 @@
+commentID	uID	tipID	commentText 	datePosted
+NULL	1	1	Great tip! 	2019-04-20 20:14:54
+NULL	1	2	This tip did not work for me.	2019-04-22 12:12:16
+NULL	1	3	Thanks for the advice.  	2019-04-24 14:12:16
+NULL	2	4	This was really helpful!  	2019-04-22 15:15:10
+NULL	2	1	Thanks so much! 	2019-04-28 17:12:56
+NULL	2	2	This tip really improved my play!  	2019-04-30 22:58:25
+NULL	3	3	I had trouble incorporating this tip.  	2019-05-01 9:26:45
+NULL	3	4	This was harder than expected. 	2019-05-03 19:16:29
+NULL	3	1	Thanks for the great tip!   	2019-05-05 10:12:48

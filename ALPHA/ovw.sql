@@ -55,7 +55,7 @@ CREATE TABLE comments(
     commentID int(10) auto_increment,
     uID int(10),
     tipID int(10),
-    text varchar(1000),
+    commentText varchar(1000),
     datePosted datetime, 
     FOREIGN KEY (tipID) REFERENCES tips(tipID) ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (uID) REFERENCES user(uID) ON DELETE SET NULL ON UPDATE CASCADE,

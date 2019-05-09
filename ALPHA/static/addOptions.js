@@ -4,12 +4,12 @@ var h = ['All','Ashe','Bastion','Doomfist','Genji','Hanzo','Junkrat','McCree',
     'Mei','Pharah','Reaper','Soldier:76','Sombra','Symmetra','Torbjorn',
     'Tracer','Widowmaker','D.Va','Orisa','Reinhardt','Roadhog','Winston',
     'Wrecking Ball','Zarya','Ana','Baptiste','Bridgette','Lúcio','Mercy',
-    'Moira','Zenyatta','General']; 
+    'Moira','Zenyatta']; 
 
 var maps = ['All','Hanamura','Horizon Lunar Colony','Paris','Temple of Anubis',
     'Volskaya Industries','Dorado','Junkertown','Rialto','Route 66',
     'Watchpoint: Gibralter','Blizzard World','Eichenwalde','Hollywood',
-    'Kings Row','Numbani','Busan','Ilios','Lijang Tower','Nepal,Oasis','General'];
+    'Kings Row','Numbani','Busan','Ilios','Lijang Tower','Nepal,Oasis'];
     
 var difficulty = ['All', 'Beginner', 'Intermediate', 'Advanced', 'Expert'];
 

@@ -59,3 +59,13 @@ th{
 input:focus{
   background-color: #edefd7;
 }
+
+.comments  tr:nth-child(even) {
+      background-color: #E6E6FA;
+
+}
+
+.comments  tr:nth-child(odd) {
+      background-color: #e8d988;
+
+}
