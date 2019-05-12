@@ -12,6 +12,19 @@
 </head>
 <body>
     
+
+{% block flash_msg %} 
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="flashMessages"><img src="../static/alert.png" style="width:3%"> {{msg}}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+{% endwith %}  
+{% endblock %}
+
+
 <table class="header">
         <tr> 
         <form method="POST" action={{url_for('search')}} enctype="multipart/form-data">
@@ -70,16 +83,6 @@
      <!--search filters -->
 </table>
 
-
-{% block flash_msg %} 
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for msg in messages %}
-            <p>{{msg}}</p>
-        {% endfor %}
-    {% endif %}
-{% endwith %}  
-{% endblock %}
 
 
 

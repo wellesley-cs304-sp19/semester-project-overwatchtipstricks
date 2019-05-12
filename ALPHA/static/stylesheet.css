@@ -33,6 +33,7 @@ th{
     background-color:#e8d988;
     border-radius:15px 15px 0px 0px;
     padding: 15px;
+    font-size:14px;
 }
 #tipTitle{
     font-weight:bold;
@@ -75,4 +76,13 @@ input:focus{
 .comments  tr:nth-child(odd) {
       background-color: #e8d988;
 
+}
+.flashMessages{
+    padding:7px;
+    margin:5px auto;
+    border-radius:5px;
+    background-color:#c4daff;
+    width:80%;
+    float:none;
+    text-align:center;
 }
