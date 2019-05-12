@@ -58,7 +58,7 @@ def addPost():
             flash('Image Upload Failed {why}'.format(why=err))
             return render_template('postTipOrTrick.html')
         
-        tipDict = {'title': title, 'text': text, 'uid': 1, 'hero': hero, 'map': tipMap, 'image': image, 'difficulty': diff}
+        tipDict = {'title': title, 'text': text, 'uid': 1, 'hero': hero, 'map': tipMapyp, 'image': image, 'difficulty': diff}
         
         conn = tt.getConn('ovw')
         tt.insertPost(conn, tipDict)
