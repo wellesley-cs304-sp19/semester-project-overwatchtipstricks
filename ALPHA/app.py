@@ -18,17 +18,12 @@ IDnum = '123123'
 @app.route('/', methods=['GET','POST'])
 def home():
     '''Direct to home page'''
-    try: 
-        
-        session['location']="home"
-       
-        conn = tt.getConn('ovw') 
-        tips = tt.getTips(conn)
-        
-        return render_template('home.html', tips=tips)
-    except Exception as err:
-        flash('Whoops! Looks like you encountered the following form error: '+str(err))
-        return redirect( url_for('home') )
+    session['location']="home"
+    conn = tt.getConn('ovw') 
+    tips = tt.getTips(conn)
+    
+    return render_template('home.html', tips=tips)
+
 
 @app.route('/addPost/', methods=['GET','POST'])
 def addPost():
