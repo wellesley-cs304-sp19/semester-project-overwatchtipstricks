@@ -59,7 +59,7 @@ def getTip(conn, tipID):
 def getComments(conn, tipID):
     '''Returns comments relevant to a given tip from the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
-    curs.execute("select 'commentText', datePosted, username from comments inner join user using (uID) where tipID = %s", (tipID,))
+    curs.execute("select comments.commentText, comments.datePosted, user.username from comments inner join user using (uID) where tipID = %s", (tipID,))
     return curs.fetchall()
 
 
