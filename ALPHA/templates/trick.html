@@ -13,20 +13,9 @@
 <p>Hero: {{trick.hero}}</p>
 <p>Map: {{trick.map}}</p>
 <br>
-<p>{{trick.postText}}
+<p>{{trick.postText}} </p>
 
-
-<form id="newComment" method="POST" action={{url_for('tipPage', tipID=trick.tipID)}} enctype="multipart/form-data" id="commentForm">
-    <table id="commentTable" align="center"> 
-    <tr><label for="comment box" >
-            <td><textarea name="commentText" rows="10" cols="75" placeholder="Enter comment here...">
-                
-            </textarea></td></tr>
-</label>
-        <tr><td><input id="addCommentButton" name="addComment" type="submit" value="Add Comment"></td></tr>
-    </table>
-
-</form>
+<img src="{{url_for('image',tipID=trick['tipID'])}}" alt="No image for: {{trick.title}}">
 
 <div class="comments">
     <h3>User comments:</h3>
@@ -37,7 +26,15 @@
               <td>{{comment.commentText}}</td>  
             </tr>
         {% endfor %}
-
     </table>
+    <h3>Add a comment:</h3>
+    <form id="newComment" method="POST" action={{url_for('tipPage', tipID=trick.tipID)}} enctype="multipart/form-data" id="commentForm">
+    <table id="commentTable" align="center"> 
+    <tr><label for="comment box" >
+            <td><textarea name="commentText" rows="10" cols="75" placeholder="Enter comment here...">
+            </textarea></td></tr></label>
+        <tr><td><input id="addCommentButton" name="addComment" type="submit" value="Add Comment"></td></tr>
+    </table>
+</form>
 </div>
 {% endblock %}

@@ -11,7 +11,6 @@ def getConn(db):
                            passwd='',
                            db=db)
     return conn
-    
 
 def insertPost(conn, tip_dict):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
@@ -63,11 +62,9 @@ def getComments(conn, tipID):
     curs.execute("select comments.commentText, comments.datePosted, user.username from comments inner join user using (uID) where tipID = %s", (tipID,))
     return curs.fetchall()
 
-
 def getSearchResults(conn, filter_dict):
     '''return all the relevant search results'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
-
 
     #create list of filter clauses
     clauses = []
@@ -112,6 +109,13 @@ def getuIDFromUser(conn,user):
     is currently no way to make an account'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select uID from user where username=%s', (user,))
+    return curs.fetchone()
+    
+def getImage(conn, tipID):
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    numrows = curs.execute('''select tipID,uID,image from tips
+                            where tipID = %s''', [tipID])
+    #MIGHT HAVE TO CHECK FOR ZERO ROWS BEFORE THIS
     return curs.fetchone()
     
 if __name__ == '__main__':
