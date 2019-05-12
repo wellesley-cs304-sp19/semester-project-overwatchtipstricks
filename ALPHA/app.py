@@ -96,26 +96,8 @@ def search():
 
         # print filter_dict
         tips =  tt.getSearchResults(conn, filter_dict)
-        # print tips
-        if len(tips) == 0:
-            flash('''We're sorry, we don't have any tips matching:
-                '%s' 
-        Map: %s 
-        Hero: %s
-        Difficulty: %s''' % (filter_dict['searchTerm'], 
-        filter_dict['mapName'], filter_dict['heroName'],
-        filter_dict['difficulty']))
-            
-        else: 
-            flash('''Displaying results for: '%s' 
-        Map: %s 
-        Hero: %s
-        Difficulty: %s''' % (filter_dict['searchTerm'], 
-        filter_dict['mapName'], filter_dict['heroName'],
-        filter_dict['difficulty']))
-        
-        
-        return render_template('search.html', tips=tips)
+  
+        return render_template('search.html', tips=tips,filters=filter_dict)
     return redirect(url_for('home'))
     
 @app.route('/tip/<tipID>', methods=['GET','POST'])
