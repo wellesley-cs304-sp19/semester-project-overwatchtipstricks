@@ -30,10 +30,11 @@ th{
 #postHeader{
     text-align: left;
     background-color:#e8d988;
-    border-radius:15px 15px 0px 0px;
-    padding: 15px;
+    padding: 3px;
+    
     font-size:14px;
 }
+
 #tipTitle{
     font-weight:bold;
     font: 35px postTitleFont, Gadget, sans-serif;
@@ -42,6 +43,7 @@ th{
 #postText{
     padding-left: 10%;
     padding-right:10%;
+    
 }
 
 #detailedTipInfo{
@@ -112,7 +114,7 @@ input:focus{
     padding:7px;
     margin:5px auto;
     border-radius:5px;
-    background-color:#c4daff;
+    background-color:#e5efff;
     width:80%;
     float:none;
     text-align:center;
