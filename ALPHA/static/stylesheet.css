@@ -44,6 +44,13 @@ th{
     padding-right:10%;
 }
 
+.logout{
+    padding: 7px 60px 7px 7px;
+    margin-left:20px;
+    text-align:left;
+    background-color:#eda934;
+    white-space:nowrap;
+}
 
 .login{
     background-color:#E6E6FA;
