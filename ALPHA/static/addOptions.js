@@ -1,5 +1,6 @@
 
 var select = document.getElementById("heroes"); 
+
 var h = ['All','Ashe','Bastion','Doomfist','Genji','Hanzo','Junkrat','McCree',
     'Mei','Pharah','Reaper','Soldier:76','Sombra','Symmetra','Torbjorn',
     'Tracer','Widowmaker','D.Va','Orisa','Reinhardt','Roadhog','Winston',

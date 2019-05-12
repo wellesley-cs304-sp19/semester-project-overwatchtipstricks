@@ -108,10 +108,8 @@ def tipPage(tipID):
     #the tipID as the location
     session['location']=tipID 
     
-    
-    conn = tt.getConn('ovw')
-    
     #get all data associated with a tip
+    conn = tt.getConn('ovw')
     tip = tt.getTip(conn, tipID)
     
     #retrieves new comment data in form for the tip and inserts into DB.
