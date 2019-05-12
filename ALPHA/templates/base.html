@@ -2,13 +2,14 @@
 <html>
 <head>
     <meta charset='utf-8'>
+    {% block headstuff %}
     <meta name=author content="Anna Farrell-Sherman and Hershel Carbajal-Rodriguez">
     <title>{% block title %} OverWatch Tips and Tricks {% endblock %}</title>
     <link rel="stylesheet" href="../static/stylesheet.css">
     <link rel="icon" href="../static/ott favicon.png" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
     <script type="text/javascript" src="../static/addOptions.js"> </script>
-    
+    {% endblock %}
 </head>
 <body>
     

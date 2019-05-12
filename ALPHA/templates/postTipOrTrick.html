@@ -1,13 +1,6 @@
 {% extends "base.html" %}
 
-{# additional stuff for the head #}
-{% block headstuff %}
-    <meta name=author content="Emma Lurie">
-{% endblock %}
-
 {% block content %}
-
-
 
 <form method="POST" action="/addPost/" enctype="multipart/form-data">
     
@@ -16,11 +9,7 @@
             <td><input id="tipTitle" type="text" name="title" size="30" placeholder="Post title"></td></tr>
         <tr><td><label for="tipHero">Hero: </label></td>
             <!-- heros could maybe be in a loop from a variable somewhere?? -->
-          <td><select id= "tipHero" name="hero">
-                <option value="Ashe">Ashe</option>
-                <option value="Bastion">Bastion</option>
-                <option value="Doomfist">Doomfist</option>
-                <option value="Genji">Genji</option></select></td></tr>
+          <td><select id="tipHero" name="tipHero"></select></td></tr>
                 
         <tr><td><label for="tipMap">Map: </label></td>
           <td><select id= "tipMap" name="map">
