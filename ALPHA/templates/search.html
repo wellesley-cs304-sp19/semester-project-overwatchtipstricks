@@ -2,6 +2,7 @@
  
 {% block content %}
 <div class='tip-list'>
+    <form method=post action="">
         <table>
             {% for tip in tips %}
             <table id="postInfo">
@@ -13,12 +14,22 @@
                     {% if tip.title %} 
                     <p id="tipTitle">{{tip.title}}</p>
                     {% endif %}
-                    <br>
-                    {{tip.postText}}
+                    <p id="postText">{{tip.postText}}</p>
+                    
+                    </td>
+                    
+                </tr>
+                <tr id="navButtons">
+                    <td>
+                        <a href="/tip/{{tip.tipID}}">
+                            <img  src="../static/arrow icon.png " alt="more info icon" align=right style="margin-right:10%" />
+                        </a>
                     </td>
                 </tr>
             </table>
+            <br>
             {% endfor %}
         </table>
+     </form>
 </div>
  {% endblock %}
