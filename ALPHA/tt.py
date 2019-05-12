@@ -98,6 +98,13 @@ def getSearchResults(conn, filter_dict):
     curs.execute(queryString)
     return curs.fetchall()
 
+def checkLogin(conn,user,pw):
+    '''checks for a username and password match. If there is a match,
+    this function will return a row. Otherwise, it will return None'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    curs.execute('select * from user where username=%s and password=%s', (user,pw))
+    return curs.fetchone()
+    
 if __name__ == '__main__':
     conn= getConn('ovw')
     #print len(getSearchResults(conn, {'mapName': 'sdfds', 'difficulty': 'All',
