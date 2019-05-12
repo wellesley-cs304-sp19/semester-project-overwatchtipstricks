@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from flask import (Flask, url_for, render_template, request, flash, redirect, session, jsonify, make_response, Response)
+from flask import (Flask, url_for, render_template, request, flash, redirect, session, jsonify)
 import tt, os, imghdr
 from werkzeug import secure_filename
 
@@ -10,7 +10,7 @@ app.secret_key = 'your secret here'
 numRequests = 0
 
 app.config['UPLOADS'] = 'uploads'
-app.config['MAX_UPLOAD'] = 2000000
+app.config['MAX_UPLOAD'] = 256000
 
 #THIS IS DEFUALT NAME OF EVERY PICTURE UPLOADED!!! we need to fix this
 IDnum = '123123'
@@ -18,8 +18,7 @@ IDnum = '123123'
 @app.route('/', methods=['GET','POST'])
 def home():
     '''Direct to home page'''
-    session['location'] = "home"
-    session['logged_in'] = False
+    session['location']="home"
     conn = tt.getConn('ovw') 
     tips = tt.getTips(conn)
     
@@ -28,6 +27,7 @@ def home():
 
 @app.route('/addPost/', methods=['GET','POST'])
 def addPost():
+        
     '''inserts a post to the database'''
     
     session['location']="addPost"
@@ -41,32 +41,29 @@ def addPost():
         diff = request.form.get('diff')
         #THIS IMAGE UPLOAD CODE NEEDS TO BE TESTED!!  
         try:
-            #nm = int(request.form['nm']) # may throw error
             f = request.files['img']
-            #check filetype
-            mime_type = imghdr.what(f.stream)
-            if mime_type not in ['jpeg','gif','png']:
-                raise Exception('Not a JPEG, GIF or PNG: {}'.format(mime_type))
-            #check filesize
             fSize = os.fstat(f.stream.fileno()).st_size
-            print 'file size is ',fSize
+            #print 'file size is ',fsize
             if fSize > app.config['MAX_UPLOAD']:
                 raise Exception('File is too large, please upload a smaller image.')
-            image = f.read()
-            
+            mime_type = imghdr.what(f)
+            if mime_type.lower() not in ['jpeg','gif','png']:
+                raise Exception('Not a JPEG, GIF or PNG: {}'.format(mime_type))
+            filename = secure_filename('{}.{}'.format(IDnum,mime_type))
+            pathname = os.path.join(app.config['UPLOADS'],filename)
+            #f.save(pathname)
+            img = f
         except Exception as err:
             flash('Image Upload Failed {why}'.format(why=err))
             return render_template('postTipOrTrick.html')
         
-        tipDict = {'title': title, 'text': text, 'uid': 1, 'hero': hero, 'map': tipMap, 'image': image, 'difficulty': diff}
+        tipDict = {'title': title, 'text': text, 'uid': 1, 'hero': hero, 'map': tipMap, 'image': None, 'difficulty': diff}
         
         conn = tt.getConn('ovw')
         tt.insertPost(conn, tipDict)
         
     elif request.method == 'POST' and request.form['submit'] == 'Login':
         return redirect( url_for('login') )
-        
-    #WHAT DOES THIS DO???? WE NEED TO CHECK??
     else: 
          title = request.args.get('title')
          text = request.args.get('text')
@@ -140,7 +137,6 @@ def login():
     '''validates loginname and password, and updates session information.
     Home page shows correct navbar (login bar, or logged in bar) 
     depending on logged_in status'''
-    print("on loggin page")
     try:
 
         username = request.form['loginname']
@@ -150,8 +146,6 @@ def login():
         #returns table row if there is a username/password match
         credentials = tt.checkLogin(conn,username,password)
         
-        print username, password, credentials
-        
         #either flash an error or flash a success message and update session
         if credentials is None:
             flash("Incorrect username or password. Please try again.")
@@ -160,9 +154,6 @@ def login():
             flash("Login successful. Welcome to OTT, Agent " + username +".")
             session['user'] = username
             session['logged_in'] = True
-
-        if session['location'].isdigit():
-            return redirect(url_for("tipPage",tipID=session['location']))
             
             #if the location str is a digit, we have saved the tipID
             if session['location'].isdigit():
@@ -200,21 +191,8 @@ def logout():
         flash('Whoops! Looks like you encountered the following error: '+str(err))
         return redirect( url_for('home') )
         
-@app.route('/image/<tipID>')
-def image(tipID):
-    conn = tt.getConn('ovw')
-    row = tt.getImage(conn, tipID)
-    try:
-        image = row['image']
-        print len(image),imghdr.what(None,image)
-        return Response(image, mimetype='image/'+imghdr.what(None,image))
-    except:
-        #QUESTION FOR SCOTT: IS THIS AN APPROPRATE ALTERNATE TO ABOVE??
-        return make_response('No picture for tip #{}'.format(tipID))
 
-        
 
-        
 if (__name__ == '__main__'):
     app.debug = True
     
