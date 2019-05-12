@@ -16,15 +16,18 @@ var difficulty = ['All', 'Beginner', 'Intermediate', 'Advanced', 'Expert'];
 
  $( document ).ready(function() {
  $.each(h, function(val, text) {
-            $('#heroes').append( $('<option></option>').val(text).html(text) )
+            $('#heroes').append( $('<option></option>').val(text).html(text) );
+            $('#tipHero').append( $('<option></option>').val(text).html(text) );
             }); 
             
+            
   $.each(maps, function(val, text) {
-           $('#maps').append( $('<option></option>').val(text).html(text) )
+           $('#maps').append( $('<option></option>').val(text).html(text) );
+           $('#tipMap').append( $('<option></option>').val(text).html(text) );
            });       
   
     $.each(difficulty, function(val, text) {
            $('#difficulty').append( $('<option></option>').val(text).html(text) )
            });    
-           
  });
+ 

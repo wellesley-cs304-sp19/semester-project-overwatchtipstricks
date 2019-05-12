@@ -38,7 +38,7 @@ CREATE TABLE tips (
     map enum('Hanamura','Horizon Lunar Colony','Paris','Temple of Anubis',
     'Volskaya Industries','Dorado','Junkertown','Rialto','Route 66',
     'Watchpoint: Gibralter','Blizzard World','Eichenwalde','Hollywood',
-    'Kings Row','Numbani','Busan','Ilios','Lijang Tower','Nepal,Oasis','All') DEFAULT 'All',
+    'Kings Row','Numbani','Busan','Ilios','Lijang Tower','Nepal','Oasis','All') DEFAULT 'All',
     
     difficulty enum('Beginner', 'Intermediate', 'Advanced', 'Expert') DEFAULT 'Beginner',
     datePosted datetime DEFAULT NULL,
