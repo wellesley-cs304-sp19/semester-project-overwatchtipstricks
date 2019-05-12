@@ -59,8 +59,7 @@ def getTip(conn, tipID):
 def getComments(conn, tipID):
     '''Returns comments relevant to a given tip from the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
-    curs.execute('''select commentText, datePosted, username 
-    from comments inner join user using (uID) where tipID = %s''', (tipID,))
+    curs.execute("select 'commentText', datePosted, username from comments inner join user using (uID) where tipID = %s", (tipID,))
     return curs.fetchall()
 
 
@@ -103,6 +102,15 @@ def checkLogin(conn,user,pw):
     this function will return a row. Otherwise, it will return None'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from user where username=%s and password=%s', (user,pw))
+    return curs.fetchone()
+    
+def getuIDFromUser(conn,user):
+    '''searches for the uID of a user. this function should only be called 
+    after it is verified that someone is logged into the database, otherwise
+    will return no results. assume usernames are all unique since there
+    is currently no way to make an account'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    curs.execute('select uID from user where username=%s', (user,))
     return curs.fetchone()
     
 if __name__ == '__main__':

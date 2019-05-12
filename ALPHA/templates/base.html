@@ -42,27 +42,26 @@
             <img src="../static/ott logo.png" alt="Overwatch Tips and Tricks Database Logo" width=80% align=left style="display:block; margin-bottom:20px">
             </a>
         </td>
+        
         <!-- Login --> 
         <td>
             
             {% if session['user'] %}
             
-            <div class="userBar">
+            <form method="POST" action={{url_for('logout')}} class="logout">
                 
                 Hello, Agent {{session['user']}}.
                 
-                <p><a href="{{url_for('addPost')}}">Post New Tip</ahref></p>
-            
-                <form method="POST" action="" class="logout">
-                    <div><input type="submit" name="submit" value="Logout"></div>
-                </form>
-             </div>
+                <p><a href="{{url_for('addPost')}}">Post New Tip</a></p>
 
+                <div><label for="logoutButton"><input type="submit" name="submit" value="Logout"></label></div>
+            </form>
+            
             {% else %}
             <form method="POST" action={{url_for('login')}} class="login">
                 <div><label for="loginname">User: <input type=text name="loginname"></label></div>
                 <div><label for="loginpass">Pass: <input type=password name="loginpass"></label></div>
-                <div><input type="submit" name="submit" value="Login"></div>
+                <div><label for="loginButton"><input type="submit" name="submit" value="Login"></label></div>
             </form>
             {% endif     %}
         </td>
