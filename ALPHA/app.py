@@ -114,20 +114,23 @@ def tipPage(tipID):
     #retrieves new comment data in form for the tip and inserts into DB.
     if request.method == 'POST' and request.form['addComment'] == 'Add Comment':
         
-        if session['logged_in']:
-            uID = tt.getuIDFromUser(conn,session['user']) #gets the current user's uID
+        if 'logged_in' in session:
+            uID = tt.getuIDFromUser(conn,session['user'])['uID'] #gets the current user's uID
             
             commentText = request.form.get("commentText")
+            
             m = tt.insertComment(conn, {'uID': uID, 'tipID': tipID, 'commentText': commentText})
             if m == 'success':
                 flash('Your comment has been added to the database')
             else: 
                 flash("Your comment was not able to be added to the database")
-        flash('You must be logged in to comment.')
+        else:
+            flash('You must be logged in to comment.')
 
     #retreives comments for a given tip    
     comments = tt.getComments(conn, tipID)
     return render_template('trick.html',comments=comments,trick=tip)
+
 
 @app.route('/login',methods=['POST'])
 def login():
@@ -155,7 +158,7 @@ def login():
             #if the location str is a digit, we have saved the tipID
             if session['location'].isdigit():
                 return redirect(url_for("tipPage",tipID=session['location']))
-            return redirect(url_for(session['location']))
+        return redirect(url_for(session['location']))
         
     except Exception as err:
         flash('Whoops! Looks like you encountered the following form error: '+str(err))
@@ -168,8 +171,7 @@ def logout():
     tries to access the page without being logged in'''
     try:
         
-        if session['logged_in']:
-            
+        if 'logged_in' in session:
             #remove session information
             session.pop('user');
             session.pop('logged_in')
@@ -181,7 +183,7 @@ def logout():
                 return redirect(url_for("tipPage",tipID=session['location']))
             return redirect(url_for(session['location']))
         
-        #if session['logged_in'] doesn't exist, that means we are not logged in!
+        #if 'logged_in' key doesn't exist, that means we are not logged in!
         flash("Sorry, you must be logged in to log out. Go figure.")
         return redirect(url_for('home'))
         
