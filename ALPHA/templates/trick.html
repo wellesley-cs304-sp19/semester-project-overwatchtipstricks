@@ -4,18 +4,23 @@
 
 {% block content %}
 
-<h2> Trick #{{trick.tipID}}: {{trick.title}} </h2>
-
-<p>Posted by:{{trick.uID}} </p>
-<p>{{trick.datePosted}}</p>
-<p>{{trick.difficulty}}</p>
-<br>
-<p>Hero: {{trick.hero}}</p>
-<p>Map: {{trick.map}}</p>
-<br>
-<p>{{trick.postText}} </p>
-
-<img src="{{url_for('image',tipID=trick['tipID'])}}" alt="No image for: {{trick.title}}">
+<div id = "detailedTipInfo">
+    <h2> Trick #{{trick.tipID}}: {{trick.title}} </h2>
+    <div class = "postingDetails">
+        <p>Posted by: {{trick.uID}} </p>
+        <p>Posted on: </p>
+        <p>{{trick.datePosted}}</p>
+    </div>
+    <div class = "characterDetails">
+        <p>{{trick.difficulty}}</p>
+        <p>Hero: {{trick.hero}}</p>
+        <p>Map: {{trick.map}}</p>
+    </div>
+    <div class = "textAndImage">
+    <p class = "postInfo">{{trick.postText}} </p>
+    <img src="{{url_for('image',tipID=trick['tipID'])}}" alt="No image for: {{trick.title}}">
+    </div>
+</div>
 
 <div class="comments">
     <h3>User comments:</h3>
