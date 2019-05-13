@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from flask import (Flask, url_for, render_template, request, flash, redirect, session, jsonify, make_response, Response)
+from flask import (Flask, url_for, render_template, request, flash, redirect, session, jsonify, Response, send_from_directory)
 import tt, os, imghdr
 from werkzeug import secure_filename
 
@@ -22,6 +22,7 @@ def home():
     #determine if 
     if 'logged_in' not in session:
         session['logged_in'] = False
+        session.pop('user')
     conn = tt.getConn('ovw') 
     tips = tt.getTips(conn)
     
@@ -180,10 +181,10 @@ def logout():
     tries to access the page without being logged in'''
     try:
         
-        if 'logged_in' in session:
+        if 'logged_in' == True:
             #remove session information
             session.pop('user');
-            session.pop('logged_in')
+            session['logged_in'] == False
             flash("Successfully logged out. Until next time.")
             
            
@@ -204,12 +205,13 @@ def logout():
 def image(tipID):
     conn = tt.getConn('ovw')
     row = tt.getImage(conn, tipID)
-    try:
-        image = row['image']
+    image = row['image']
+    if image == 'NULL':
+        print("no image")
+        return send_from_directory('static', 'image-placeholder.jpg')
+    else:
         print len(image),imghdr.what(None,image)
         return Response(image, mimetype='image/'+imghdr.what(None,image))
-    except:
-        return make_response('No picture for tip #{}'.format(tipID))
 
         
 if (__name__ == '__main__'):
