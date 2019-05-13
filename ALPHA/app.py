@@ -20,9 +20,7 @@ def home():
     '''Direct to home page'''
     session['location'] = "home"
     #determine if 
-    if 'logged_in' not in session:
-        session['logged_in'] = False
-        session.pop('user')
+
     conn = tt.getConn('ovw') 
     tips = tt.getTips(conn)
     
@@ -35,7 +33,7 @@ def addPost():
     
     session['location'] = "addPost"
     
-    if request.method == 'POST' and request.form['submit'] == 'Add Post' and session['logged_in'] == True:
+    if request.method == 'POST' and request.form['submit'] == 'Add Post' and ('user' in session):
         title = request.form.get('title')
         text = request.form.get('text')
         hero = request.form.get('hero')
@@ -73,10 +71,10 @@ def addPost():
     elif request.method == 'POST' and request.form['submit'] == 'Login':
         return redirect( url_for('login') )
 
-    if session['logged_in'] == False:
+    if 'user' not in session:
         flash("You must be logged in to post a tip!")
         
-    print(session['logged_in'])
+  
     print("ABOUT TO RENDER TEMPLATE")
     return render_template('postTipOrTrick.html')
     
@@ -122,7 +120,7 @@ def tip(tipID):
     #retrieves new comment data in form for the tip and inserts into DB.
     if request.method == 'POST' and request.form['addComment'] == 'Add Comment':
         
-        if 'logged_in' == True:
+        if 'user' in session:
             uID = tt.getuIDFromUser(conn,session['user'])['uID'] #gets the current user's uID
             
             commentText = request.form.get("commentText")
@@ -161,13 +159,11 @@ def login():
         else:
             flash("Login successful. Welcome to OTT, Agent " + username +".")
             session['user'] = username
-            session['logged_in'] = True
-            print(session['logged_in'])
+            print(session['user'])
 
         #if the location str is a digit, we have saved the tipID
         if session['location'].isdigit():
-            return redirect(url_for("tipPage",tipID=session['location']))
-            
+            return redirect(url_for("tip",tipID=session['location']))
         return redirect(url_for(session['location']))
         
     except Exception as err:
@@ -181,16 +177,14 @@ def logout():
     tries to access the page without being logged in'''
     try:
         
-        if 'logged_in' == True:
+        if session['logged_in']:
             #remove session information
             session.pop('user');
-            session['logged_in'] == False
             flash("Successfully logged out. Until next time.")
-            
            
             #if the location str is a digit, we have saved the tipID
             if session['location'].isdigit():
-                return redirect(url_for("tipPage",tipID=session['location']))
+                return redirect(url_for("tip",tipID=session['location']))
             return redirect(url_for(session['location']))
         
         #if 'logged_in' key doesn't exist, that means we are not logged in!
