@@ -30,7 +30,10 @@ def insertPost(conn, tip_dict):
                     (%s, %s, %s, %s, %s, %s, %s);''', 
             (title, text, image, hero, mapName, difficulty, datePosted))
     conn.commit()
-    return "success"
+    
+    curs.execute('select tipID from tips where datePosted = %s', (datePosted,))
+    
+    return curs.fetchone()
 
 def insertComment(conn, comment_dict):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)

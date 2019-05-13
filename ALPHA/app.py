@@ -19,7 +19,9 @@ IDnum = '123123'
 def home():
     '''Direct to home page'''
     session['location'] = "home"
-    session['logged_in'] = False
+    #determine if 
+    if 'logged_in' not in session:
+        session['logged_in'] = False
     conn = tt.getConn('ovw') 
     tips = tt.getTips(conn)
     
@@ -30,47 +32,51 @@ def home():
 def addPost():
     '''inserts a post to the database'''
     
-    session['location']="addPost"
+    session['location'] = "addPost"
     
-    if request.method == 'POST' and request.form['submit'] == 'Add Post':
+    if request.method == 'POST' and request.form['submit'] == 'Add Post' and session['logged_in'] == True:
         title = request.form.get('title')
         text = request.form.get('text')
         hero = request.form.get('hero')
         tipMap = request.form.get('map')
         tipMap = request.form.get('map')
         diff = request.form.get('diff')
-        #THIS IMAGE UPLOAD CODE NEEDS TO BE TESTED!!  
+        image = None
         try:
             #nm = int(request.form['nm']) # may throw error
             f = request.files['img']
             #check filetype
             mime_type = imghdr.what(f.stream)
             if mime_type not in ['jpeg','gif','png']:
-                raise Exception('Not a JPEG, GIF or PNG: {}'.format(mime_type))
+                raise ValueError('Not a JPEG, GIF or PNG: {}'.format(mime_type))
             #check filesize
             fSize = os.fstat(f.stream.fileno()).st_size
             print 'file size is ',fSize
             if fSize > app.config['MAX_UPLOAD']:
-                raise Exception('File is too large, please upload a smaller image.')
+                raise ValueError('File is too large, please upload a smaller image.')
             image = f.read()
             
-        except Exception as err:
+        except ValueError as err:
             flash('Image Upload Failed {why}'.format(why=err))
             return render_template('postTipOrTrick.html')
+        except:
+            pass
         
-        tipDict = {'title': title, 'text': text, 'uid': 1, 'hero': hero, 'map': tipMapyp, 'image': image, 'difficulty': diff}
+        tipDict = {'title': title, 'text': text, 'uid': 1, 'hero': hero, 'map': tipMap, 'image': image, 'difficulty': diff}
         
         conn = tt.getConn('ovw')
-        tt.insertPost(conn, tipDict)
+        tipID = tt.insertPost(conn, tipDict)['tipID']
+        print(tipID)
+        return redirect( url_for('tip', tipID = tipID) )
         
     elif request.method == 'POST' and request.form['submit'] == 'Login':
         return redirect( url_for('login') )
+
+    if session['logged_in'] == False:
+        flash("You must be logged in to post a tip!")
         
-    #WHAT DOES THIS DO???? WE NEED TO CHECK??
-    else: 
-         title = request.args.get('title')
-         text = request.args.get('text')
-    #flash("Post is here!! {}".format(title))
+    print(session['logged_in'])
+    print("ABOUT TO RENDER TEMPLATE")
     return render_template('postTipOrTrick.html')
     
 
@@ -99,7 +105,7 @@ def search():
     return redirect(url_for('home'))
     
 @app.route('/tip/<tipID>', methods=['GET','POST'])
-def tipPage(tipID):
+def tip(tipID):
     '''displays all associated data for a tip in a new webpage, 
     including all of the comments left on a post. Users can also add comments
     to the post on this page.'''
@@ -115,7 +121,7 @@ def tipPage(tipID):
     #retrieves new comment data in form for the tip and inserts into DB.
     if request.method == 'POST' and request.form['addComment'] == 'Add Comment':
         
-        if 'logged_in' in session:
+        if 'logged_in' == True:
             uID = tt.getuIDFromUser(conn,session['user'])['uID'] #gets the current user's uID
             
             commentText = request.form.get("commentText")
@@ -138,7 +144,6 @@ def login():
     '''validates loginname and password, and updates session information.
     Home page shows correct navbar (login bar, or logged in bar) 
     depending on logged_in status'''
-    print("on loggin page")
     try:
 
         username = request.form['loginname']
@@ -148,8 +153,6 @@ def login():
         #returns table row if there is a username/password match
         credentials = tt.checkLogin(conn,username,password)
         
-        print username, password, credentials
-        
         #either flash an error or flash a success message and update session
         if credentials is None:
             flash("Incorrect username or password. Please try again.")
@@ -158,13 +161,12 @@ def login():
             flash("Login successful. Welcome to OTT, Agent " + username +".")
             session['user'] = username
             session['logged_in'] = True
+            print(session['logged_in'])
 
+        #if the location str is a digit, we have saved the tipID
         if session['location'].isdigit():
             return redirect(url_for("tipPage",tipID=session['location']))
             
-            #if the location str is a digit, we have saved the tipID
-            if session['location'].isdigit():
-                return redirect(url_for("tipPage",tipID=session['location']))
         return redirect(url_for(session['location']))
         
     except Exception as err:
@@ -207,7 +209,6 @@ def image(tipID):
         print len(image),imghdr.what(None,image)
         return Response(image, mimetype='image/'+imghdr.what(None,image))
     except:
-        #QUESTION FOR SCOTT: IS THIS AN APPROPRATE ALTERNATE TO ABOVE??
         return make_response('No picture for tip #{}'.format(tipID))
 
         

@@ -77,6 +77,10 @@ th{
     padding: 15px;
 }
 
+.textAndImage img {
+  height: 120px;
+}
+
 .logout{
     padding: 7px 60px 7px 7px;
     margin-left:20px;
