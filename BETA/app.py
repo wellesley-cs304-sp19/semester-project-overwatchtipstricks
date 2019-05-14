@@ -25,7 +25,6 @@ def home():
     tips = tt.getTips(conn)
     popTip = tt.popularTip(conn)
     print (popTip)
-    
     return render_template('home.html', tips=tips, today=popTip)
 
 

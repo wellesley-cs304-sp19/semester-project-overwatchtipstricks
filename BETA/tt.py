@@ -58,7 +58,10 @@ def getTip(conn, tipID):
     '''Returns a specific tip from the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips where tipID = %s', (tipID,))
-    return curs.fetchone()
+    row = curs.fetchone()
+    userID = getUserFromuID(conn, row['uID'])['username']
+    row['user'] = userID
+    return row
     
 def getComments(conn, tipID):
     '''Returns comments relevant to a given tip from the database'''
@@ -133,7 +136,8 @@ def popularTip(conn):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select tips.title, tips.uID, tips.datePosted, tips.postText, tips.tipID from comments, tips where tips.tipID = comments.tipID  order by comments.datePosted desc limit 1')
     row = curs.fetchone()
-    print(row)
+    userID = getUserFromuID(conn, row['uID'])['username']
+    row['user'] = userID
     return row
 
     

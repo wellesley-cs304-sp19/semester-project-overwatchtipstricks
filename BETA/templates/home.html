@@ -10,11 +10,11 @@
 <div class="center">
     <div id="popTip">
         
-        <p id="popHeader"> Tip of the Day<p>
+        <p id="popHeader"> Most Popular Tip <p>
         <p id="popTitle">{{today.title}}</p>
         <p>{{today.postText}}</p>
         <img class="popImage" src="{{url_for('image',tipID=today['tipID'])}}" alt="No image for: {{today.title}}">
-        <p>Posted {{today.datePosted}} by {{today.uID}}</p>
+        <p>Posted {{today.datePosted}} by {{today.user}}</p>
         <a href="/tip/{{today.tipID}}">
             <img  src="../static/arrow icon.png " alt="more info icon" align=right style="margin-right:10%" />
         </a>
