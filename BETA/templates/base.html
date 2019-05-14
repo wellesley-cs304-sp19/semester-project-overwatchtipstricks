@@ -26,40 +26,36 @@
 {% endblock %}
 
 
-<table class="header">
-        <tr> 
+<table id="PageHeader">
+    <tr> <!--search filters -->
+        <div class="searchBar">
         <form method="POST" action={{url_for('search')}} enctype="multipart/form-data">
-      <label for="search bar"> <input type="text" name='search' placeholder="Search..."></label>
-      <label for="map dropdown">
-          <span>Map:</span>
-          <select id="maps" name="maps">
+            <label for="search bar"> <input type="text" name='search' placeholder="Search..."></label>
+            <label for="map dropdown">
+                <span>Map:</span>
+                <select id="maps" name="maps"></select>
             </label>
-        </select>
-    
-    <label for="hero dropdown"> 
-        <span>Hero:</span>
-        <select id="heroes" name = "heroes"> 
-        </select>
-    </label>
-    <span> Difficulty:</span>
-        <label for="difficulty dropdown"> 
-        <select id="difficulty" name = "difficulty"> 
-        </select>
-    </label>
-    
-      <input id="searchButton" name="submitSearch" type="submit" value="Search">
-    </form>
+            <label for="hero dropdown"> 
+                <span>Hero:</span>
+                <select id="heroes" name = "heroes"> </select>
+            </label>
+            <label for="difficulty dropdown">
+                <span> Difficulty:</span>
+                <select id="difficulty" name = "difficulty"> </select>
+            </label>
+            <input id="searchButton" name="submitSearch" type="submit" value="Search">
+        </form>
+        </div>
     </tr>
     <tr>
         <td>
             <a href={{url_for('home')}}>
-            <img src="../static/ott logo.png" alt="Overwatch Tips and Tricks Database Logo" width=80% align=left style="display:block; margin-bottom:20px">
+                <img src="../static/ott logo.png" alt="Overwatch Tips and Tricks Database Logo" width=80% align=left style="display:block; margin-bottom:20px">
             </a>
         </td>
         
         <!-- Login --> 
         <td>
-            
             {% if session['user'] %}
             
             <form method="POST" action={{url_for('logout')}} class="logout">
@@ -77,16 +73,10 @@
                 <div><label for="loginpass">Pass: <input type=password name="loginpass"></label></div>
                 <div><label for="loginButton"><input type="submit" name="submit" value="Login"></label></div>
             </form>
-            {% endif     %}
+            {% endif %}
         </td>
     </tr>
-    
-     <!--search filters -->
 </table>
-
-
-
-
 
 {% block content %}
 {% endblock %}

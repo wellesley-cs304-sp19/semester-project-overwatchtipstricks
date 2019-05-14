@@ -36,6 +36,7 @@ def insertPost(conn, tip_dict):
     return curs.fetchone()
 
 def insertComment(conn, comment_dict):
+    '''adds a comment to the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     datePosted = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     # if image and difficulty: 
@@ -114,7 +115,14 @@ def getuIDFromUser(conn,user):
     curs.execute('select uID from user where username=%s', (user,))
     return curs.fetchone()
     
+def getUserFromuID(conn,uID):
+    '''searches for username of a user based on uID'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    curs.execute('select username from user where uID=%s', (uID,))
+    return curs.fetchone()
+    
 def getImage(conn, tipID):
+    '''gets the image for a given tip out of the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     numrows = curs.execute('''select tipID,uID,image from tips
                             where tipID = %s''', [tipID])

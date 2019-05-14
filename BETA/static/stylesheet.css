@@ -21,6 +21,16 @@ body {
 th{
     text-align: left;
 }
+
+#PageHeader {
+      border-color: #E6E6FA;
+}
+
+.searchBar{
+    background-color: #e8d988;
+    padding: 5px;
+}
+
 #postInfo{
     width: 50%;
     background-color:#f9f9e3;
@@ -48,7 +58,6 @@ th{
 #detailedTipInfo{
     width: 80%;
     background-color:#f9f9e3;
-    
     margin: auto;
 }
 
@@ -58,22 +67,21 @@ th{
     border-radius:15px 15px 0px 0px;
     padding: 15px;
 }
-
 .postingDetails {
     width: 50%;
     float: right;
     border-color: blue;
 }
-
 .characterDetails{
     width: 50%;
     float: left;
 }
-
 .textAndImage {
     clear:both;
-    background-color:#e8d988;
     padding: 15px;
+    border-top-width: 15px;
+    border-top-color: #e8d988;
+    border-top-style: solid;
 }
 
 .textAndImage img {
@@ -85,6 +93,7 @@ th{
     width: 70%;
     border-radius: 0px 0px 15px 15px;
     display: inline-block;
+    padding-bottom: 10px;
 }
 #popHeader {
     font-weight:bold;
@@ -131,14 +140,16 @@ input:focus{
   background-color: #edefd7;
 }
 
-.comments  tr:nth-child(even) {
-      background-color: #E6E6FA;
-
+.commentTable td {
+    padding: 10px;
 }
 
-.comments  tr:nth-child(odd) {
-      background-color: #e8d988;
+.commentTable  tr:nth-child(even) {
+      background-color: #E6E6FA;
+}
 
+.commentTable  tr:nth-child(odd) {
+      background-color: #e8d988;
 }
 
 .flashMessages{
