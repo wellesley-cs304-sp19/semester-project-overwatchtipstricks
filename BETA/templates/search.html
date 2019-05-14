@@ -1,0 +1,44 @@
+  {% extends "base.html" %}
+ 
+{% block content %}
+
+    {% if tips|length %}
+        <p>Displaying results for the following query.</p>
+    {%else%}
+        <p>We're sorry, we don't have any tips matching the following query.</p>
+    {% endif %}
+    <strong>Term:</strong>'{{filters.searchTerm}}' &emsp; <strong>Map:</strong> {{filters.mapName}} &emsp; <strong>Hero:</strong> {{filters.heroName}}  &emsp; <strong>Difficulty:</strong> {{filters.difficulty}}</pre>
+    <p></p>
+    
+<div class='tip-list'>
+    <form method=post action="">
+        <table>
+            {% for tip in tips %}
+            <table id="postInfo">
+                <th id="postHeader">
+                    Tip #{{tip.tipID}} {% if tip.datePosted %} {{tip.datePosted}} {% endif %}
+                </th>
+                <tr>
+                    <td>
+                    {% if tip.title %} 
+                    <p id="tipTitle">{{tip.title}}</p>
+                    {% endif %}
+                    <p id="postText">{{tip.postText}}</p>
+                    
+                    </td>
+                    
+                </tr>
+                <tr id="navButtons">
+                    <td>
+                        <a href="/tip/{{tip.tipID}}">
+                            <img  src="../static/arrow icon.png " alt="more info icon" align=right style="margin-right:10%" />
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            {% endfor %}
+        </table>
+     </form>
+</div>
+ {% endblock %}

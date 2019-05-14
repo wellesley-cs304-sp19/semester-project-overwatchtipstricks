@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    {% block headstuff %}
+    <meta name=author content="Anna Farrell-Sherman and Hershel Carbajal-Rodriguez">
+    <title>{% block title %} OverWatch Tips and Tricks {% endblock %}</title>
+    <link rel="stylesheet" href="../static/stylesheet.css">
+    <link rel="icon" href="../static/ott favicon.png" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+    <script type="text/javascript" src="../static/addOptions.js"> </script>
+    {% endblock %}
+</head>
+<body>
+    
+
+{% block flash_msg %} 
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="flashMessages"><img src="../static/alert.png" style="width:3%"> {{msg}}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+{% endwith %}  
+{% endblock %}
+
+
+<table class="header">
+        <tr> 
+        <form method="POST" action={{url_for('search')}} enctype="multipart/form-data">
+      <label for="search bar"> <input type="text" name='search' placeholder="Search..."></label>
+      <label for="map dropdown">
+          <span>Map:</span>
+          <select id="maps" name="maps">
+            </label>
+        </select>
+    
+    <label for="hero dropdown"> 
+        <span>Hero:</span>
+        <select id="heroes" name = "heroes"> 
+        </select>
+    </label>
+    <span> Difficulty:</span>
+        <label for="difficulty dropdown"> 
+        <select id="difficulty" name = "difficulty"> 
+        </select>
+    </label>
+    
+      <input id="searchButton" name="submitSearch" type="submit" value="Search">
+    </form>
+    </tr>
+    <tr>
+        <td>
+            <a href={{url_for('home')}}>
+            <img src="../static/ott logo.png" alt="Overwatch Tips and Tricks Database Logo" width=80% align=left style="display:block; margin-bottom:20px">
+            </a>
+        </td>
+        
+        <!-- Login --> 
+        <td>
+            
+            {% if session['user'] %}
+            
+            <form method="POST" action={{url_for('logout')}} class="logout">
+                
+                Hello, Agent {{session['user']}}.
+                
+                <p><a href="{{url_for('addPost')}}">Post New Tip</a></p>
+
+                <div><label for="logoutButton"><input type="submit" name="submit" value="Logout"></label></div>
+            </form>
+            
+            {% else %}
+            <form method="POST" action={{url_for('login')}} class="login">
+                <div><label for="loginname">User: <input type=text name="loginname"></label></div>
+                <div><label for="loginpass">Pass: <input type=password name="loginpass"></label></div>
+                <div><label for="loginButton"><input type="submit" name="submit" value="Login"></label></div>
+            </form>
+            {% endif     %}
+        </td>
+    </tr>
+    
+     <!--search filters -->
+</table>
+
+
+
+
+
+{% block content %}
+{% endblock %}
+
+</html>
