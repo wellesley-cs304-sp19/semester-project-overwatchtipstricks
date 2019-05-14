@@ -50,7 +50,7 @@ def insertComment(conn, comment_dict):
 def getTips(conn):
     '''returns all tips in the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
-    curs.execute('select * from tips')
+    curs.execute('select * from tips order by datePosted desc')
     return curs.fetchall()
     
 def getTip(conn, tipID):
@@ -123,7 +123,7 @@ def getImage(conn, tipID):
 def popularTip(conn):
     '''gets the most recently comment on tip from the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
-    curs.execute('select tips.title, tips.uID, tips.datePosted, tips.text from comments, tips where tips.tipID = comments.tipID  order by comments.datePosted desc limit 1')
+    curs.execute('select tips.title, tips.uID, tips.datePosted, tips.postText, tips.tipID from comments, tips where tips.tipID = comments.tipID  order by comments.datePosted desc limit 1')
     row = curs.fetchone()
     print(row)
     return row

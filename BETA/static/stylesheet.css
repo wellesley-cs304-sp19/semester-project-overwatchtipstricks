@@ -19,19 +19,19 @@ body {
 }
 
 th{
-    
     text-align: left;
 }
 #postInfo{
     width: 50%;
     background-color:#f9f9e3;
     border-radius:15px;
+    padding-bottom:7px;
 }
+
 #postHeader{
     text-align: left;
     background-color:#e8d988;
     padding: 3px;
-    
     font-size:14px;
 }
 
@@ -43,13 +43,12 @@ th{
 #postText{
     padding-left: 10%;
     padding-right:10%;
-    
 }
 
 #detailedTipInfo{
     width: 80%;
     background-color:#f9f9e3;
-    border-radius:15px;
+    
     margin: auto;
 }
 
@@ -79,6 +78,34 @@ th{
 
 .textAndImage img {
   height: 300px;
+}
+
+#popTip {
+    background-color: #E6E6FA;
+    width: 70%;
+    border-radius: 0px 0px 15px 15px;
+    display: inline-block;
+}
+#popHeader {
+    font-weight:bold;
+    background-color: #9191ff;
+    padding: 3px;
+    font-size:14px;
+    text-align: left;
+    margin-top: 0px;
+}
+#popTitle {
+    font-weight:bold;
+    font: 35px postTitleFont, Gadget, sans-serif;
+    text-align:center;
+}
+.popImage {
+    height:150px;
+}
+
+.center {
+    padding-top: 0px;
+    text-align: center;
 }
 
 .logout{

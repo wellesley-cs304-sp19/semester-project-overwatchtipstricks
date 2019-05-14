@@ -5,18 +5,21 @@
 <p>Welcome to the Overwatch Tips and Tricks Database!</p>
 <p>We hope this becomes your one stop for all your gaming questions.</p>
 
-<div id="tip-of-the-day">
-    
-    <h3> Tip of the Day: </h3>
-    {% if today %}
-    <p>{{today.title}}</p>
-    <p>by: {{today.uID}} <italics>on </italics>{{tip.datePosted}}</p>
-    <p>{{today.text}}</p>
-    {% endif %}
-    
+{% if today %}
+<div class="center">
+    <div id="popTip">
+        
+        <p id="popHeader"> Tip of the Day<p>
+        <p id="popTitle">{{today.title}}</p>
+        <p>{{today.postText}}</p>
+        <img class="popImage" src="{{url_for('image',tipID=today['tipID'])}}" alt="No image for: {{today.title}}">
+        <p>Posted {{today.datePosted}} by {{today.uID}}</p>
+        <a href="/tip/{{today.tipID}}">
+            <img  src="../static/arrow icon.png " alt="more info icon" align=right style="margin-right:10%" />
+        </a>
+    </div>
 </div>
-
-<h3><a href= '/addPost/'>Post a Tip!</a></h3>
+{% endif %}
 
 <div class='tip-list'>
     <h3>Latest Tips and Tricks:</h3>
