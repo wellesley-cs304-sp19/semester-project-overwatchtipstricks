@@ -24,8 +24,9 @@ def home():
     conn = tt.getConn('ovw') 
     tips = tt.getTips(conn)
     popTip = tt.popularTip(conn)
+    print "POPULAR TIP:"
     print (popTip)
-    return render_template('home.html', tips=tips, today=popTip)
+    return render_template('home.html', tips=tips,today=popTip)
 
 
 @app.route('/addPost/', methods=['GET','POST'])
@@ -181,7 +182,7 @@ def logout():
     tries to access the page without being logged in'''
     try:
         
-        if session['logged_in']:
+        if session['user']:
             #remove session information
             session.pop('user');
             flash("Successfully logged out. Until next time.")
