@@ -22,12 +22,14 @@
 </div>
 {% endif %}
 
+
+
 <div class='tip-list'>
     <h3>Latest Tips and Tricks:</h3>
     <form method=post action="">
         <table>
             {% for tip in tips %}
-            <table id="postInfo">
+            <table class="postInfo">
                 <th id="postHeader">
                     Tip #{{tip.tipID}} {% if tip.datePosted %} {{tip.datePosted}} {% endif %}
                 </th>

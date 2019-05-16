@@ -12,7 +12,7 @@
     {% endblock %}
 </head>
 <body>
-    
+
 
 {% block flash_msg %} 
 {% with messages = get_flashed_messages() %}
@@ -27,6 +27,7 @@
 
 
 <table id="PageHeader">
+    
     <tr> <!--search filters -->
         <div class="searchBar">
         <form method="POST" action={{url_for('search')}} enctype="multipart/form-data">
@@ -47,7 +48,8 @@
         </form>
         </div>
     </tr>
-    <tr>
+    <tr >
+        
         <td>
             <a href={{url_for('home')}}>
                 <img src="{{ url_for('static', filename='ott logo.png') }}" alt="Overwatch Tips and Tricks Database Logo" width=80% align=left style="display:block; margin-bottom:20px">
@@ -81,5 +83,6 @@
 
 {% block content %}
 {% endblock %}
+
 
 </html>

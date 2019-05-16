@@ -23,21 +23,28 @@ th{
 }
 
 #PageHeader {
-      border-color: #E6E6FA;
+    border-color: #E6E6FA;
+    
 }
 
 .searchBar{
     background-color: #e8d988;
     padding: 5px;
+    
 }
 
-#postInfo{
+.postInfo{
     width: 50%;
     background-color:#f9f9e3;
     border-radius:15px;
     padding-bottom:7px;
 }
-
+.postInfo:hover{
+   background-color:#f7f0d7;
+}
+.postInfo:hover #postHeader{
+    background-color:#f9c054;
+}
 #postHeader{
     text-align: left;
     background-color:#e8d988;
@@ -49,6 +56,7 @@ th{
     font-weight:bold;
     font: 35px postTitleFont, Gadget, sans-serif;
     text-align:center;
+    
 }
 #postText{
     padding-left: 10%;
@@ -111,6 +119,14 @@ th{
 .popImage {
     height:150px;
 }
+
+/*.topSection{*/
+/*    background-image:url("blue.jpg");*/
+/*    background-attachment: fixed;*/
+/*    position:relative;*/
+/*    background-repeat: repeat-y;*/
+/*    background-size: 100%;*/
+/*}*/
 
 .center {
     padding-top: 0px;

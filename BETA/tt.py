@@ -59,7 +59,10 @@ def getTip(conn, tipID):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips where tipID = %s', (tipID,))
     row = curs.fetchone()
+    
+
     userID = getUserFromuID(conn, row['uID'])['username']
+
     row['user'] = userID
     return row
     

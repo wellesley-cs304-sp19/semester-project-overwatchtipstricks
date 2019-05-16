@@ -182,7 +182,6 @@ def logout():
     '''logs out or redirects to homepage with a message if someone
     tries to access the page without being logged in'''
     try:
-        print(session['logged_in'])
         if session['logged_in']:
             #remove session information
             session.pop('user');
