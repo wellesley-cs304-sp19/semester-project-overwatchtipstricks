@@ -20,12 +20,10 @@ def home():
     '''Direct to home page'''
     session['location'] = "home"
 
-    print("on home")
     conn = tt.getConn('ovw') 
     tips = tt.getTips(conn)
     popTip = tt.popularTip(conn)
-    print "POPULAR TIP:"
-    print (popTip)
+    
     return render_template('home.html', tips=tips,today=popTip)
 
 
@@ -212,7 +210,33 @@ def image(tipID):
         print len(image),imghdr.what(None,image)
         return Response(image, mimetype='image/'+imghdr.what(None,image))
 
+@app.route('/likePost',methods=['POST'])
+def likePost():
+    print "NOW IN /LIKEPOST...."
+    if 'user' in session:
         
+        print "woohoo"
+        # print "NOW IN /LIKEPOST. NOW PRINTING TIPID AND LIKESYMBOL"
+        # tipID=request.form['tipID']
+        # likeSymbol=request.form['likeSymbol']
+        
+        # print tipID
+        # print likeSymbol
+        
+        # #INTRODUCE LOCKING HERE!!!!!
+        # conn = tt.getConn('wmdb')
+        # uID= tt.getuIDFromUser(conn,session['user'])
+        # tt.setLikes(conn,tipID,uID)
+        
+        
+    #     #if the location str is a digit, we have saved the tipID
+    #     if session['location'].isdigit():
+    #         return redirect(url_for("tip",tipID=session['location']))
+    #     return redirect(url_for(session['location']))
+    
+    # flash('You must be logged in to like a post.')
+    return redirect(url_for('home'))
+    
 if (__name__ == '__main__'):
     app.debug = True
     app.run('0.0.0.0', 8081)

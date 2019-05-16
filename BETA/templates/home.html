@@ -26,12 +26,11 @@
 
 <div class='tip-list'>
     <h3>Latest Tips and Tricks:</h3>
-    <form method=post action="">
         <table>
             {% for tip in tips %}
             <table class="postInfo">
                 <th id="postHeader">
-                    Tip #{{tip.tipID}} {% if tip.datePosted %} {{tip.datePosted}} {% endif %}
+                    Tip #<span data-tipID={{tip.tipID}} >{{tip.tipID}}</span> {% if tip.datePosted %} {{tip.datePosted}} {% endif %}
                 </th>
                 <tr>
                     <td>
@@ -48,13 +47,18 @@
                         <a href="/tip/{{tip.tipID}}">
                             <img  src="../static/arrow icon.png " alt="more info icon" align=right style="margin-right:10%" />
                         </a>
+                        
+                            
+                        {{likes}}
+                        <form method="POST" action={{url_for('likePost')}}>
+                            <label class="like"> <input type="submit" name="likeButton" value="&#10084;"> </label>
+                        </form>
                     </td>
                 </tr>
             </table>
             <br>
             {% endfor %}
         </table>
-     </form>
 </div>
  
  {% endblock %}
