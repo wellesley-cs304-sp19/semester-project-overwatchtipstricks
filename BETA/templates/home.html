@@ -2,9 +2,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% block intro %}
 <p>Welcome to the Overwatch Tips and Tricks Database!</p>
 <p>We hope this becomes your one stop for all your gaming questions.</p>
 <br>
+{% endblock %}
 
 {% if today %}
 <div class="center">
@@ -16,7 +18,7 @@
         <img class="popImage" src="{{url_for('image',tipID=today['tipID'])}}" alt="No image for: {{today.title}}">
         <p>Posted {{today.datePosted}} by {{today.user}}</p>
         <a href="/tip/{{today.tipID}}">
-            <img  src="../static/arrow icon.png " alt="more info icon" align=right style="margin-right:10%" />
+            <img  src="{{ url_for('static',filename='arrow icon.png')}}" alt="more info icon" align=right style="margin-right:10%" />
         </a>
     </div>
 </div>
@@ -25,7 +27,9 @@
 
 
 <div class='tip-list'>
-    <h3>Latest Tips and Tricks:</h3>
+
+    <h3>{% block listTitle %}Latest Tips and Tricks:{% endblock %}</h3>
+    <form method=post action="">
         <table>
             {% for tip in tips %}
             <table class="postInfo">
@@ -45,7 +49,7 @@
                 <tr id="navButtons">
                     <td>
                         <a href="/tip/{{tip.tipID}}">
-                            <img  src="../static/arrow icon.png " alt="more info icon" align=right style="margin-right:10%" />
+                            <img  src="{{ url_for('static',filename='arrow icon.png')}}" alt="more info icon" align=right style="margin-right:10%" />
                         </a>
                         
                             

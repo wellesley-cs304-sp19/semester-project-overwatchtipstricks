@@ -54,17 +54,22 @@ def getTips(conn):
     curs.execute('select * from tips order by datePosted desc')
     return curs.fetchall()
     
+    ################################
+    #NOTE TO HERSHEL: THIS CURRENTLY USES TO FUNCTION, SHOULD WE NOT DO AN INNERJOIN???
 def getTip(conn, tipID):
     '''Returns a specific tip from the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips where tipID = %s', (tipID,))
     row = curs.fetchone()
-    
-
     userID = getUserFromuID(conn, row['uID'])['username']
-
     row['user'] = userID
     return row
+    ################################################################
+    
+def getTipbyUser(conn, userName):
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    curs.execute('select * from tips,user where tips.uID = user.uID and user.username = %s', (userName,))
+    return curs.fetchall()
     
 def getComments(conn, tipID):
     '''Returns comments relevant to a given tip from the database'''
@@ -113,10 +118,7 @@ def checkLogin(conn,user,pw):
     return curs.fetchone()
     
 def getuIDFromUser(conn,user):
-    '''searches for the uID of a user. this function should only be called 
-    after it is verified that someone is logged into the database, otherwise
-    will return no results. assume usernames are all unique since there
-    is currently no way to make an account'''
+    '''searches for the uID of a user. returns none if the username does not yet exist'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select uID from user where username=%s', (user,))
     return curs.fetchone()
@@ -142,6 +144,16 @@ def popularTip(conn):
     userID = getUserFromuID(conn, row['uID'])['username']
     row['user'] = userID
     return row
+    
+def addUser(conn, username, password):
+    '''adds a user to the database'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    curs.execute("insert into user(username,password,permission) values (%s, %s, 'player')", (username, password))
+    conn.commit()
+    curs.execute("select * from user where username = %s", (username,))
+    row = curs.fetchone()
+    userID = row['uID']
+    return userID
 
 
 def setLikes(conn,tipID,uID):
