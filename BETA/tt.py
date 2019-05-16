@@ -143,6 +143,15 @@ def popularTip(conn):
     row['user'] = userID
     return row
 
+
+def setLikes(conn,tipID,uID):
+    '''sets the like count for a tip'''
+    '''gets the image for a given tip out of the database'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    numrows = curs.execute('''select tipID,uID,image from tips
+                            where tipID = %s''', [tipID])
+    return curs.fetchone()
+    
     
 if __name__ == '__main__':
     conn= getConn('ovw')
