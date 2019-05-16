@@ -237,6 +237,22 @@ def createAccount():
             return redirect( url_for('home') )
         
     return render_template('createAccount.html')
+    
+@app.route('/user/<userName>')#, methods=['GET','POST'])
+def userPage(userName):
+    if not session['logged_in']: #check that they are logged in
+        flash("Please log in to view your profile!")
+        return redirect( url_for('home') )
+    elif session['user'] != userName: #check that they are the user they say they are
+        flash("Please log in to view your profile!")
+        #logout any stored user info and return to homepage
+        session['logged_in'] = False
+        session.pop('user')
+        return redirect( url_for('home') )
+    else:
+        conn = tt.getConn('ovw')
+        tips = tt.getTipbyUser(conn, userName)
+        return render_template('userPage.html', tips=tips)
 
         
 if (__name__ == '__main__'):

@@ -54,17 +54,22 @@ def getTips(conn):
     curs.execute('select * from tips order by datePosted desc')
     return curs.fetchall()
     
+    ################################
+    #NOTE TO HERSHEL: THIS CURRENTLY USES TO FUNCTION, SHOULD WE NOT DO AN INNERJOIN???
 def getTip(conn, tipID):
     '''Returns a specific tip from the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips where tipID = %s', (tipID,))
     row = curs.fetchone()
-    
-
     userID = getUserFromuID(conn, row['uID'])['username']
-
     row['user'] = userID
     return row
+    ################################################################
+    
+def getTipbyUser(conn, userName):
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    curs.execute('select * from tips,user where tips.uID = user.uID and user.username = %s', (userName,))
+    return curs.fetchall()
     
 def getComments(conn, tipID):
     '''Returns comments relevant to a given tip from the database'''
