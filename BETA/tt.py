@@ -54,6 +54,13 @@ def getTips(conn):
     curs.execute('select * from tips order by datePosted desc')
     return curs.fetchall()
     
+def getTipsAndLikes(conn):
+    '''returns all tips in the database inner joined with their like counts'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    curs.execute("select a.*,count(b.tipID) as totalLikes from tips as a left join likes as b on a.tipID=b.tipID group by a.tipID order by datePosted desc")
+    return curs.fetchall()
+    
+    
     ################################
     #NOTE TO HERSHEL: THIS CURRENTLY USES TO FUNCTION, SHOULD WE NOT DO AN INNERJOIN???
 def getTip(conn, tipID):
@@ -64,7 +71,7 @@ def getTip(conn, tipID):
     userID = getUserFromuID(conn, row['uID'])['username']
     row['user'] = userID
     return row
-    ################################################################
+    #################################
     
 def getTipbyUser(conn, userName):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
@@ -156,13 +163,52 @@ def addUser(conn, username, password):
     return userID
 
 
+def checkLikes(conn,tipID,uID):
+    ''''checks for existing likes between a user and a post'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    numrows = curs.execute('''select * from likes where uID=%s and tipID=%s''', [uID,tipID])
+    return curs.fetchone()
+    
+def tipLikes(conn,tipID):
+    ''''returns total # of likes for a given post'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    numrows = curs.execute('''select count(*) from likes where tipID=%s''', [tipID])
+    return curs.fetchone()['count(*)']
+    
 def setLikes(conn,tipID,uID):
     '''sets the like count for a tip'''
     '''gets the image for a given tip out of the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
-    numrows = curs.execute('''select tipID,uID,image from tips
-                            where tipID = %s''', [tipID])
-    return curs.fetchone()
+    
+    try:
+        print "now inl. SET LIKES!" 
+        print "CHECKING IF USER HAS LIKED TIP BEFORE"
+        # checking to see if we have a record of the user liking the post
+        tipUserLikeHistory = checkLikes(conn,tipID,uID)
+        print "PRINTING USER HISTORY"
+        print tipUserLikeHistory
+        
+        if tipUserLikeHistory:
+            
+            
+            print "TRYING TO DELTE POST"
+            #user has liked the post. delete row from table to remove like
+            curs.execute('''delete from likes where tipID=%s and uID=%s''', [tipID,uID])
+            conn.commit();
+            return "success"
+    
+        
+        print "INSERTING INTO TABLE"
+        print uID
+        print tipID
+        
+        #user has not liked the post. insert user/tipID pair into likes table
+        curs.execute('''insert into likes(tipID,uID) values (%s,%s)''', (tipID,uID))
+        conn.commit();
+        return "success"
+        
+    except Exception as err:
+        print("ERRROR!!!!!" + str(err))
     
     
 if __name__ == '__main__':

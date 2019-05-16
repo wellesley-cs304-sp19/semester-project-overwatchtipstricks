@@ -20,7 +20,7 @@ def home():
         session['logged_in'] = False
 
     conn = tt.getConn('ovw') 
-    tips = tt.getTips(conn)
+    tips = tt.getTipsAndLikes(conn)
     popTip = tt.popularTip(conn)
 
     return render_template('home.html', tips=tips, today=popTip)
@@ -256,32 +256,30 @@ def userPage(userName):
         tips = tt.getTipbyUser(conn, userName)
         return render_template('userPage.html', tips=tips)
 
-@app.route('/likePost',methods=['POST'])
+@app.route('/likePost',methods=['POST','GET'])
 def likePost():
     print "NOW IN /LIKEPOST...."
+
+    
     if 'user' in session:
         
-        print "woohoo"
-        # print "NOW IN /LIKEPOST. NOW PRINTING TIPID AND LIKESYMBOL"
-        # tipID=request.form['tipID']
-        # likeSymbol=request.form['likeSymbol']
+        likeButtonText = request.form.get('likeButtonText');
+        tipID = request.form.get('tipID');
         
-        # print tipID
-        # print likeSymbol
+         #connect to the database
+        conn = tt.getConn('ovw');
+        uID=tt.getuIDFromUser(conn, session['user'])['uID']
+        tt.setLikes(conn,int(tipID),int(uID));
+        newLikes = tt.tipLikes(conn,tipID);
         
-        # #INTRODUCE LOCKING HERE!!!!!
-        # conn = tt.getConn('wmdb')
-        # uID= tt.getuIDFromUser(conn,session['user'])
-        # tt.setLikes(conn,tipID,uID)
+        #if like buttontext is like, change to unlike. otherwise, the
+        #button text is not like, so change it back to like.
+        likeButtonText = "Unlike" if likeButtonText=="Like" else "Like"
         
-        
-    #     #if the location str is a digit, we have saved the tipID
-    #     if session['location'].isdigit():
-    #         return redirect(url_for("tip",tipID=session['location']))
-    #     return redirect(url_for(session['location']))
+        return jsonify({'likeButtonText':likeButtonText, 'newLikes':newLikes,'tipID':tipID})
+    else:
+        flash("Nice try, Sombra. You need to be logged in to like a post.")
     
-    # flash('You must be logged in to like a post.')
-    return redirect(url_for('home'))
     
 if (__name__ == '__main__'):
     app.debug = True

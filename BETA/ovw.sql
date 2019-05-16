@@ -70,7 +70,8 @@ CREATE TABLE comments(
 CREATE TABLE likes (
   uID int(10),
   tipID int(10),
-  primary KEY (uID),
+  PRIMARY KEY (uID,tipID),
+  key (uID),
   key tipID (tipID),
   UNIQUE(uID,tipID),
   FOREIGN KEY (tipID) REFERENCES tips(tipID) ON DELETE CASCADE ON UPDATE CASCADE,
