@@ -10,10 +10,7 @@ app.secret_key = 'your secret here'
 numRequests = 0
 
 app.config['UPLOADS'] = 'uploads'
-app.config['MAX_UPLOAD'] = 2000000
-
-#THIS IS DEFUALT NAME OF EVERY PICTURE UPLOADED!!! we need to fix this
-IDnum = '123123'
+app.config['MAX_UPLOAD'] = 16777215
 
 @app.route('/', methods=['GET','POST'])
 def home():

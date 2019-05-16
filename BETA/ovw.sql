@@ -27,7 +27,7 @@ CREATE TABLE tips (
     title varchar(30) DEFAULT NULL,
     postText varchar(3000) DEFAULT NULL,
     uID int(10),
-    image longblob,
+    image mediumblob,
     
     hero enum('Ashe','Bastion','Doomfist','Genji','Hanzo','Junkrat','McCree',
     'Mei','Pharah','Reaper','Soldier:76','Sombra','Symmetra','Torbjörn',
