@@ -5,8 +5,8 @@
     {% block headstuff %}
     <meta name=author content="Anna Farrell-Sherman and Hershel Carbajal-Rodriguez">
     <title>{% block title %} OverWatch Tips and Tricks {% endblock %}</title>
-    <link rel="stylesheet" href="../static/stylesheet.css">
-    <link rel="icon" href="../static/ott favicon.png" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='ott favicon.png') }}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
     <script type="text/javascript" src="../static/addOptions.js"> </script>
     {% endblock %}
@@ -18,7 +18,7 @@
 {% with messages = get_flashed_messages() %}
     {% if messages %}
         {% for msg in messages %}
-            <div class="flashMessages"><img src="../static/alert.png" style="width:3%"> {{msg}}</div>
+            <div class="flashMessages"><img src="{{ url_for('static', filename='alert.png') }}" style="width:3%"> {{msg}}</div>
             <br>
         {% endfor %}
     {% endif %}
@@ -50,7 +50,7 @@
     <tr>
         <td>
             <a href={{url_for('home')}}>
-                <img src="../static/ott logo.png" alt="Overwatch Tips and Tricks Database Logo" width=80% align=left style="display:block; margin-bottom:20px">
+                <img src="{{ url_for('static', filename='ott logo.png') }}" alt="Overwatch Tips and Tricks Database Logo" width=80% align=left style="display:block; margin-bottom:20px">
             </a>
         </td>
         
