@@ -16,12 +16,12 @@ app.config['MAX_UPLOAD'] = 16777215
 def home():
     '''Direct to home page'''
     session['location'] = "home"
+    if 'logged_in' not in session:
+        session['logged_in'] = False
 
-    print("on home")
     conn = tt.getConn('ovw') 
     tips = tt.getTips(conn)
     popTip = tt.popularTip(conn)
-    print (popTip)
     return render_template('home.html', tips=tips, today=popTip)
 
 
@@ -144,6 +144,9 @@ def login():
     '''validates loginname and password, and updates session information.
     Home page shows correct navbar (login bar, or logged in bar) 
     depending on logged_in status'''
+    if request.method == 'POST' and request.form['submit'] == 'Create your account!':
+        return redirect(url_for('createAccount'))
+    
     try:
 
         username = request.form['loginname']
@@ -160,6 +163,7 @@ def login():
         else:
             flash("Login successful. Welcome to OTT, Agent " + username +".")
             session['user'] = username
+            session['logged_in'] = True
             print(session['user'])
 
         #if the location str is a digit, we have saved the tipID
@@ -169,6 +173,7 @@ def login():
         
     except Exception as err:
         flash('Whoops! Looks like you encountered the following form error: '+str(err))
+        print(err)
         return redirect( url_for('home') )
     
 
@@ -177,10 +182,11 @@ def logout():
     '''logs out or redirects to homepage with a message if someone
     tries to access the page without being logged in'''
     try:
-        
+        print(session['logged_in'])
         if session['logged_in']:
             #remove session information
             session.pop('user');
+            session['logged_in'] = False
             flash("Successfully logged out. Until next time.")
            
             #if the location str is a digit, we have saved the tipID
@@ -207,6 +213,31 @@ def image(tipID):
     else:
         print len(image),imghdr.what(None,image)
         return Response(image, mimetype='image/'+imghdr.what(None,image))
+        
+@app.route('/createAccount/', methods=['GET','POST'])
+def createAccount():
+    if request.method == 'POST' and request.form['submit'] == 'Create Account':
+        #check passwords
+        pass1 = request.form.get('pass1')
+        pass2 = request.form.get('pass2')
+        if pass1 != pass2:
+            flash("Your two passwords did not match please try again")
+            return render_template('createAccount.html')
+
+        #check that username is novel
+        userName = request.form.get('username')
+        conn = tt.getConn('ovw')
+        if tt.getuIDFromUser(conn,userName) is not None:
+            flash("That username already exsists on our server! please try again")
+            return render_template('createAccount.html')
+        else:
+            uID = tt.addUser(conn, userName, pass1)
+            flash("Welcome to OTT Agent " + userName + "!")
+            session['logged_in'] = True
+            session['user'] = userName
+            return redirect( url_for('home') )
+        
+    return render_template('createAccount.html')
 
         
 if (__name__ == '__main__'):
