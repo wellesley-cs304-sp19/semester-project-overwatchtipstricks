@@ -301,6 +301,7 @@ def createAccount():
             uID = tt.addUser(conn, userName, pass1)
             flash("Welcome to OTT Agent " + userName + "!")
             session['user'] = userName
+            
             return redirect( url_for('home') )
         
     return render_template('createAccount.html')

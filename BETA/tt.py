@@ -168,6 +168,11 @@ def addUser(conn, username, password):
     userID = row['uID']
     return userID
 
+def getPermission(conn, username):
+    '''gets permission for an account on the server'''
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    curs.execute("select permission from user where username=%s", (username))
+    return curs.fetchone()
 
 def checkLikes(conn,tipID,uID):
     ''''checks for existing likes between a user and a post'''

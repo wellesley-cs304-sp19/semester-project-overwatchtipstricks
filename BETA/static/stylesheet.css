@@ -78,20 +78,25 @@ th{
     padding: 15px;
 }
 .postingDetails {
-    width: 50%;
     float: right;
-    border-color: blue;
+    margin-right:10%;
+    background-color:#e8d988;
+    /*border-color: blue;*/
+    display:inline;
 }
 .characterDetails{
     width: 50%;
     float: left;
+    display:inline;
+    background-color:#e8d988;
 }
 .textAndImage {
     clear:both;
     padding: 15px;
-    border-top-width: 15px;
-    border-top-color: #e8d988;
-    border-top-style: solid;
+    margin-top:15px;
+    /*border-top-width: 15px;*/
+    /*border-top-color: #e8d988;*/
+    /*border-top-style: solid;*/
 }
 
 .textAndImage img {
