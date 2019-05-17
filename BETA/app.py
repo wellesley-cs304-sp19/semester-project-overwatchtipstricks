@@ -313,7 +313,7 @@ def likePost():
         
         likeButtonText = request.form.get('likeButtonText');
         tipID = request.form.get('tipID');
-        
+
          #connect to the database
         conn = tt.getConn('ovw');
         uID=tt.getuIDFromUser(conn, session['user'])['uID']
@@ -323,6 +323,7 @@ def likePost():
         tt.setLikes(conn,int(tipID),int(uID));
         newLikes = tt.tipLikes(conn,tipID);
         lock.release()
+        
         #if like buttontext is like, change to unlike. otherwise, the
         #button text is not like, so change it back to like.
         likeButtonText = "Unlike" if likeButtonText=="Like" else "Like"
