@@ -13,7 +13,7 @@ var heroes = ['All','Ashe','Bastion','Doomfist','Genji','Hanzo','Junkrat','McCre
 var maps = ['All','Hanamura','Horizon Lunar Colony','Paris','Temple of Anubis',
     'Volskaya Industries','Dorado','Junkertown','Rialto','Route 66',
     'Watchpoint: Gibralter','Blizzard World','Eichenwalde','Hollywood',
-    'Kings Row','Numbani','Busan','Ilios','Lijang Tower','Nepal,Oasis'];
+    'Kings Row','Numbani','Busan','Ilios','Lijang Tower','Nepal','Oasis'];
     
 var difficulty = ['All', 'Beginner', 'Intermediate', 'Advanced', 'Expert'];
 

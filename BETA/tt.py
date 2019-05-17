@@ -178,26 +178,24 @@ def setLikes(conn,tipID,uID):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     
     try:
-        print "now inl. SET LIKES!" 
-        print "CHECKING IF USER HAS LIKED TIP BEFORE"
+        # print "now in. SET LIKES!" 
+        # print "CHECKING IF USER HAS LIKED TIP BEFORE"
+        
         # checking to see if we have a record of the user liking the post
         tipUserLikeHistory = checkLikes(conn,tipID,uID)
-        print "PRINTING USER HISTORY"
-        print tipUserLikeHistory
+        # print "PRINTING USER HISTORY"
+        # print tipUserLikeHistory
         
         if tipUserLikeHistory:
             
             
-            print "TRYING TO DELTE POST"
+           
             #user has liked the post. delete row from table to remove like
             curs.execute('''delete from likes where tipID=%s and uID=%s''', [tipID,uID])
             conn.commit();
             return "success"
     
-        
-        print "INSERTING INTO TABLE"
-        print uID
-        print tipID
+
         
         #user has not liked the post. insert user/tipID pair into likes table
         curs.execute('''insert into likes(tipID,uID) values (%s,%s)''', (tipID,uID))
