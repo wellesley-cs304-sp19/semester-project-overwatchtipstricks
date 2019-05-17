@@ -25,10 +25,10 @@ def insertPost(conn, tip_dict):
     
     datePosted = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     # if image and difficulty: 
-    curs.execute('''insert into tips(title, postText, image, hero, map, difficulty, datePosted) 
+    curs.execute('''insert into tips(title, postText, image, hero, map, difficulty, datePosted, uID) 
                     values 
-                    (%s, %s, %s, %s, %s, %s, %s);''', 
-            (title, text, image, hero, mapName, difficulty, datePosted))
+                    (%s, %s, %s, %s, %s, %s, %s, %s);''', 
+            (title, text, image, hero, mapName, difficulty, datePosted, uid))
     conn.commit()
     
     curs.execute('select tipID from tips where datePosted = %s', (datePosted,))

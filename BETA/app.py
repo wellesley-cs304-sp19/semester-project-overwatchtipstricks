@@ -63,7 +63,6 @@ def addPost():
         diff = request.form.get('diff')
         image = None
         try:
-            #nm = int(request.form['nm']) # may throw error
             f = request.files['img']
             #check filetype
             mime_type = imghdr.what(f.stream)
@@ -71,7 +70,6 @@ def addPost():
                 raise ValueError('Not a JPEG, GIF or PNG: {}'.format(mime_type))
             #check filesize
             fSize = os.fstat(f.stream.fileno()).st_size
-            print 'file size is ',fSize
             if fSize > app.config['MAX_UPLOAD']:
                 raise ValueError('File is too large, please upload a smaller image.')
             image = f.read()
@@ -98,8 +96,6 @@ def addPost():
     if 'user' not in session:
         flash("You must be logged in to post a tip!")
         
-  
-    print("ABOUT TO RENDER TEMPLATE")
     return render_template('postTipOrTrick.html')
     
 
@@ -193,7 +189,6 @@ def login():
             flash("Login successful. Welcome to OTT, Agent " + username +".")
             session['user'] = username
             session['logged_in'] = True
-            print(session['user'])
 
         #if the location str is a digit, we have saved the tipID
         if session['location'].isdigit():
@@ -202,7 +197,6 @@ def login():
         
     except Exception as err:
         flash('Whoops! Looks like you encountered the following form error: '+str(err))
-        print(err)
         return redirect( url_for('home') )
     
 
@@ -235,11 +229,9 @@ def image(tipID):
     conn = tt.getConn('ovw')
     row = tt.getImage(conn, tipID)
     image = row['image']
-    if image == 'NULL':
-        print("no image uploaded")
+    if image == 'NULL' or image == None:
         return send_from_directory('static', 'image-placeholder.jpg')
     else:
-        print len(image),imghdr.what(None,image)
         return Response(image, mimetype='image/'+imghdr.what(None,image))
         
 @app.route('/createAccount/', methods=['GET','POST'])
@@ -285,9 +277,6 @@ def userPage(userName):
 
 @app.route('/likePost',methods=['POST','GET'])
 def likePost():
-    print "NOW IN /LIKEPOST...."
-
-    
     if 'user' in session:
         
         likeButtonText = request.form.get('likeButtonText');
