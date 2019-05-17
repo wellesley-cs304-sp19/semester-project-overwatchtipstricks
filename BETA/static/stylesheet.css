@@ -186,3 +186,10 @@ input:focus{
     float:none;
     text-align:center;
 }
+.dva{
+    position:fixed;
+    bottom:-100px;
+    left:0px;
+    height:500px;
+    z-index:-10;
+}

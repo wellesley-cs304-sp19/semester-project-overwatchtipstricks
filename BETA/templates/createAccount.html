@@ -4,20 +4,22 @@
 {% endblock %}
 
 
+
 {% block content %}
 <p>Welcome to the Overwatch Tips and Tricks Database!</p>
 <p>We are so glad you wish to become an agent!  We hope your gamming improves by leaps and bounds.</p>
 <br>
 
-{% if 'user' in session %}
+<img src='{{url_for("static",filename="dva ink.jpg")}}' alt="D.VA Crying" class="dva">
 
+{% if 'user' in session %}
 <p> Hello, Agent {{session['user']}}! You are already logged in. </p> <br>
     <form method="POST" action={{url_for('logout')}}>
         <div><label for="logoutButton"><input type="submit" name="submit" value="Logout"></label></div>
     </form>
-    
+
     {% else %}
-    <form method="POST">
+    <form method="POST" style="margin-left:40%" align="left">
         <div><label for="username">Username: <input type=text name="username"></label></div>
         <br>
         <div><label for="pass1">Password: <input type=password name="pass1"></label></div>

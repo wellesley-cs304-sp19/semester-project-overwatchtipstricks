@@ -247,6 +247,7 @@ def logout():
     '''logs out or redirects to homepage with a message if someone
     tries to access the page without being logged in'''
     try:
+
         if session['user']:
             #remove session information
             session.pop('user');
@@ -257,7 +258,8 @@ def logout():
                 return redirect(url_for("tip",tipID=session['location']))
             return redirect(url_for(session['location']))
         
-        #if 'user' key doesn't exist, that means we are not logged in!
+        #if 'user' key doesnt exist we are not logged in!
+
         flash("Sorry, you must be logged in to log out. Go figure.")
         return redirect(url_for('home'))
         
@@ -313,6 +315,15 @@ def userPage(userName):
     else:
         conn = tt.getConn('ovw')
         tips = tt.getTipbyUser(conn, userName)
+        
+        for tip in tips:
+            tip['totalLikes']=tt.tipLikes(conn,tip['tipID'])
+            uID = tt.getuIDFromUser(conn,session['user'])['uID'] #gets the current user's uID
+        
+            #check if the logged in user has liked this specific tip
+            userLikes = tt.checkLikes(conn,tip['tipID'],uID)
+            tip['likeText'] = 'Unlike' if userLikes else 'Like'
+        
         return render_template('userPage.html', tips=tips)
 
 @app.route('/likePost',methods=['POST','GET'])
