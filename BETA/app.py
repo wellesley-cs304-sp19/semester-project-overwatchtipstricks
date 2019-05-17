@@ -99,6 +99,8 @@ def addPost():
         
         conn = tt.getConn('ovw')
         uID = tt.getuIDFromUser(conn,session['user'])['uID'] #gets the current user's uID
+        print "posting GETTING UID"
+        print uID
 
         tipDict = {'title': title, 'text': text, 'uid': uID, 'hero': hero, 'map': tipMap, 'image': image, 'difficulty': diff}
         
@@ -174,6 +176,8 @@ def tip(tipID):
     conn = tt.getConn('ovw')
     tip = tt.getTip(conn, tipID)
 
+    print "IN TIP ROUTE"
+    print tip
     tip['totalLikes']=tt.tipLikes(conn,tip['tipID'])
 
     

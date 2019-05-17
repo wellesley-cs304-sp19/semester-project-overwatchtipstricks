@@ -76,6 +76,7 @@ def getTip(conn, tipID):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips,user where tips.uID = user.uID and tipID = %s', (tipID,))
     row = curs.fetchone()
+
     dbi.dict2utf8(row)
     return row
     
