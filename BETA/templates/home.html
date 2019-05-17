@@ -14,7 +14,7 @@
         
         <p id="popHeader"> Most Popular Tip <p>
         <p id="popTitle">{{today.title}}</p>
-        <p style="margin: 0% 10%">{{today.postText}}</p>
+        <p style="margin: 0% 10%">{{today.postText}}</p> <br>
         <img class="popImage" src="{{url_for('image',tipID=today['tipID'])}}" alt="No image for: {{today.title}}">
         <p>Posted {{today.datePosted}} by {{today.user}}</p>
         <a href="/tip/{{today.tipID}}">
