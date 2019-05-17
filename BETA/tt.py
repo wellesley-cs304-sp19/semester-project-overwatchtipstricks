@@ -68,7 +68,16 @@ def getTip(conn, tipID):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips where tipID = %s', (tipID,))
     row = curs.fetchone()
-    userID = getUserFromuID(conn, row['uID'])['username']
+    print "GETTING TIP."
+    print row
+    print "TIP ID:" + str(tipID)
+    
+    #we check to see if 'uID'=None to avoid an error when using getUserFromuID.
+    #otherwise, if we try to use getUderFromuID(...)['username'] we run into
+    #an error because the key doesn't exist
+    userID=None
+    if row['uID'] is not None:
+        userID = getUserFromuID(conn, row['uID'])['username']
     row['user'] = userID
     return row
     #################################

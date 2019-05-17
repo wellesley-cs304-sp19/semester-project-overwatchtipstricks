@@ -60,7 +60,7 @@
         <!-- Login --> 
         {% block login %} 
         <td>
-            {% if session['logged_in'] %}
+            {% if session['user'] %}
             <form method="POST" action={{url_for('logout')}} class="logout">
                 Hello, Agent {{session['user']}}.
                 <p><a href="{{url_for('addPost')}}">Post New Tip</a></p>
