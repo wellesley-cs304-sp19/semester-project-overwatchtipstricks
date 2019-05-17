@@ -5,18 +5,17 @@ import tt, os, imghdr
 from werkzeug import secure_filename
 
 app = Flask(__name__)
-app.secret_key = 'your secret here'
+app.secret_key = 'Hershel is Awesome'
 
-numRequests = 0
-
-app.config['UPLOADS'] = 'uploads'
+#max file size for images (same as size of meduim blob which is how they are stored)
 app.config['MAX_UPLOAD'] = 16777215
 
 @app.route('/', methods=['GET','POST'])
 def home():
-    '''Direct to home page'''
-    session['location'] = "home"
+    '''Loads home page of OTT'''
+    session['location'] = "home" #used to return to the correct page after login
 
+    #connect to database
     conn = tt.getConn('ovw') 
 
     #if someone is logged in
@@ -52,11 +51,27 @@ def home():
 def addPost():
     '''inserts a post to the database'''
     
-    session['location'] = "addPost"
+    session['location'] = "addPost" #used to return to the correct location after login
     
+    #used to hold information a user inputed if some feilds are incorrectly filed out
+    valueText = {'pTitle': "", 'pText': ""}
+    
+    #if user submits a post
     if request.method == 'POST' and request.form['submit'] == 'Add Post' and ('user' in session):
+        #get the post information
         title = request.form.get('title')
         text = request.form.get('text')
+        #check that both title and text were filled out
+        if title == '':
+            flash("Your tip must have a title!")
+            print(text)
+            valueText['pText'] = text if text != '' else valueText['pText']
+            print( valueText['pText'])
+            return render_template('postTipOrTrick.html', pHolder=valueText)
+        if text == '':
+            flash("Your tip must have some description!")
+            valueText['pTitle'] = title if title != '' else valueText['pTitle']
+            return render_template('postTipOrTrick.html', pHolder=valueText)
         hero = request.form.get('hero')
         tipMap = request.form.get('map')
         tipMap = request.form.get('map')
@@ -76,18 +91,17 @@ def addPost():
             
         except ValueError as err:
             flash('Image Upload Failed {why}'.format(why=err))
-            return render_template('postTipOrTrick.html')
+            return render_template('postTipOrTrick.html', pHolder=valueText)
         except:
             pass
         
         conn = tt.getConn('ovw')
         uID = tt.getuIDFromUser(conn,session['user'])['uID'] #gets the current user's uID
-        print(session['user'])
-        print(uID)
+
         tipDict = {'title': title, 'text': text, 'uid': uID, 'hero': hero, 'map': tipMap, 'image': image, 'difficulty': diff}
         
         tipID = tt.insertPost(conn, tipDict)['tipID']
-        print(tipID)
+        flash("Thanks! Your tip has been added to the database.")
         return redirect( url_for('tip', tipID = tipID) )
         
     elif request.method == 'POST' and request.form['submit'] == 'Login':
@@ -96,7 +110,7 @@ def addPost():
     if 'user' not in session:
         flash("You must be logged in to post a tip!")
         
-    return render_template('postTipOrTrick.html')
+    return render_template('postTipOrTrick.html', pHolder=valueText)
     
 
 @app.route('/search/', methods=['GET','POST'])
@@ -217,7 +231,6 @@ def login():
         else:
             flash("Login successful. Welcome to OTT, Agent " + username +".")
             session['user'] = username
-            session['logged_in'] = True
 
         #if the location str is a digit, we have saved the tipID
         if session['location'].isdigit():
@@ -234,10 +247,9 @@ def logout():
     '''logs out or redirects to homepage with a message if someone
     tries to access the page without being logged in'''
     try:
-        if session['logged_in']:
+        if session['user']:
             #remove session information
             session.pop('user');
-            session['logged_in'] = False
             flash("Successfully logged out. Until next time.")
            
             #if the location str is a digit, we have saved the tipID
@@ -245,7 +257,7 @@ def logout():
                 return redirect(url_for("tip",tipID=session['location']))
             return redirect(url_for(session['location']))
         
-        #if 'logged_in' key doesn't exist, that means we are not logged in!
+        #if 'user' key doesn't exist, that means we are not logged in!
         flash("Sorry, you must be logged in to log out. Go figure.")
         return redirect(url_for('home'))
         
@@ -282,7 +294,6 @@ def createAccount():
         else:
             uID = tt.addUser(conn, userName, pass1)
             flash("Welcome to OTT Agent " + userName + "!")
-            session['logged_in'] = True
             session['user'] = userName
             return redirect( url_for('home') )
         
@@ -290,13 +301,12 @@ def createAccount():
     
 @app.route('/user/<userName>')#, methods=['GET','POST'])
 def userPage(userName):
-    if not session['logged_in']: #check that they are logged in
+    if 'user' not in session: #check that they are logged in
         flash("Please log in to view your profile!")
         return redirect( url_for('home') )
     elif session['user'] != userName: #check that they are the user they say they are
         flash("Please log in to view your profile!")
         #logout any stored user info and return to homepage
-        session['logged_in'] = False
         session.pop('user')
         return redirect( url_for('home') )
     else:
