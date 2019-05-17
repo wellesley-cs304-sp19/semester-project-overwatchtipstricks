@@ -11,11 +11,13 @@
     <p></p>
     
 <div class='tip-list'>
+
+    <h3>{% block listTitle %}Latest Tips and Tricks:{% endblock %}</h3>
     <form method=post action="">
         <table>
             {% for tip in tips %}
-            <table id="postInfo">
-                <th id="postHeader">
+            <table class="postInfo">
+                <th id="postHeader" >
                     Tip #{{tip.tipID}} {% if tip.datePosted %} {{tip.datePosted}} {% endif %}
                 </th>
                 <tr>
@@ -28,17 +30,30 @@
                     </td>
                     
                 </tr>
-                <tr id="navButtons">
+                <tr id="navButtons"  data-ID={{tip.tipID}} >
                     <td>
+                        
                         <a href="/tip/{{tip.tipID}}">
-                            <img  src="../static/arrow icon.png " alt="more info icon" align=right style="margin-right:10%" />
+                            <img  src="{{ url_for('static',filename='arrow icon.png')}}" alt="more info icon" align=right style="margin-right:10%" />
                         </a>
+                        
+                        <!--we only want the like form to show up when someone is logged in-->
+                        {% if session['user'] %}
+                            <form method="POST" action={{url_for('likePost')}} align=right style="margin-right:20%">
+                                <span id="totalLikes">{{tip.totalLikes}}</span>
+                                <label class="like"> <input type="submit" name="likeButton" value="{{tip.likeText}}"></label>
+                            </form>
+                            
+                        {%else%}
+                            <!--display the total number of likes without rendering the button. then, say "like" if the total number of likes=1, else say "likes"-->
+                            <div align=right style="margin-right:20%" ><i>{{tip.totalLikes}} {%if tip.totalLikes is eq(1)%} Like {%else%}Likes {%endif%}</i></div>
+                        {% endif  %}
+
                     </td>
                 </tr>
             </table>
             <br>
             {% endfor %}
         </table>
-     </form>
 </div>
  {% endblock %}

@@ -123,7 +123,25 @@ def search():
 
         # print filter_dict
         tips =  tt.getSearchResults(conn, filter_dict)
-  
+        
+        
+        #if someone is logged in, get their uID so we can use it later
+        if 'user' in session:
+            uID = tt.getuIDFromUser(conn,session['user'])['uID']
+        
+        for tip in tips:
+            
+            tip['totalLikes']=tt.tipLikes(conn,tip['tipID'])
+            
+            # we check to see if the user is in session again
+            #down here, so we do not waste a computation getting the uID
+            #every single time we run the loop. assume tt.getuIDFromUser worked
+            #because it is only run when someone is logged in
+            if 'user' in session:
+                userLikes = tt.checkLikes(conn,tip['tipID'],uID)
+                tip['likeText'] = 'Unlike' if userLikes else 'Like'
+
+
         return render_template('search.html', tips=tips,filters=filter_dict)
     return redirect(url_for('home'))
     
@@ -140,12 +158,22 @@ def tip(tipID):
     #get all data associated with a tip
     conn = tt.getConn('ovw')
     tip = tt.getTip(conn, tipID)
+    tip['totalLikes']=tt.tipLikes(conn,tip['tipID'])
     
+    #note that since this is the first place we check if user is in session,
+    #we save the uID and use it later. this is because we conditionally
+    #use it later if the comments form is used
+    if 'user' in session:
+        uID = tt.getuIDFromUser(conn,session['user'])['uID'] #gets the current user's uID
+        
+        #check if the logged in user has liked this specific tip
+        userLikes = tt.checkLikes(conn,tip['tipID'],uID)
+        tip['likeText'] = 'Unlike' if userLikes else 'Like'
+     
     #retrieves new comment data in form for the tip and inserts into DB.
     if request.method == 'POST' and request.form['addComment'] == 'Add Comment':
         
         if 'user' in session:
-            uID = tt.getuIDFromUser(conn,session['user'])['uID'] #gets the current user's uID
             
             commentText = request.form.get("commentText")
             
