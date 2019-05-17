@@ -107,11 +107,18 @@ def getSearchResults(conn, filter_dict):
                     (filter_dict['searchTerm'], filter_dict['searchTerm'], filter_dict['mapName'], filter_dict['difficulty'],filter_dict['heroName'],))
     return curs.fetchall()
 
-def checkLogin(conn,user,pw):
-    '''checks for a username and password match. If there is a match,
-    this function will return a row. Otherwise, it will return None'''
+# def checkLogin(conn,user,pw):
+#     '''checks for a username and password match. If there is a match,
+#     this function will return a row. Otherwise, it will return None'''
+#     curs = conn.cursor(MySQLdb.cursors.DictCursor)
+#     curs.execute('select * from user where username=%s and password=%s', (user,pw))
+#     return curs.fetchone()
+    
+def getPassword(conn,user):
+    '''searches for the uID of a user. returns none if the username does not yet exist'''
+    print "IN GET PASSWORD!"
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
-    curs.execute('select * from user where username=%s and password=%s', (user,pw))
+    curs.execute('SELECT password FROM user WHERE username= %s',[user])
     return curs.fetchone()
     
 def getuIDFromUser(conn,user):

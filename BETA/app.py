@@ -4,6 +4,7 @@ from threading import Thread, Lock
 from flask import (Flask, url_for, render_template, request, flash, redirect, session, jsonify, Response, send_from_directory)
 import tt, os, imghdr
 from werkzeug import secure_filename
+import bcrypt
 app = Flask(__name__)
 
 app.secret_key = 'Hershel is Awesome'
@@ -226,15 +227,27 @@ def login():
         conn = tt.getConn('ovw')
         
         #returns table row if there is a username/password match
-        credentials = tt.checkLogin(conn,username,password)
+        passwordDict = tt.getPassword(conn,username)
+        
+        print passwordDict
         
         #either flash an error or flash a success message and update session
-        if credentials is None:
+        if passwordDict is None:
             flash("Incorrect username or password. Please try again.")
             
         else:
-            flash("Login successful. Welcome to OTT, Agent " + username +".")
-            session['user'] = username
+            
+            print "BEFORE PW"
+            storedPassword = passwordDict['password']
+            
+            print "PASSWORD STUFF"
+            print storedPassword
+            print bcrypt.hashpw(password.encode('utf-8'),storedPassword.encode('utf-8'))
+            if bcrypt.hashpw(password.encode('utf-8'),storedPassword.encode('utf-8')) == storedPassword:
+                flash("Login successful. Welcome to OTT, Agent " + username +".")
+                session['user'] = username
+            else:
+                flash("oh no!")
 
         #if the location str is a digit, we have saved the tipID
         if session['location'].isdigit():
@@ -291,7 +304,7 @@ def createAccount():
         if pass1 != pass2:
             flash("Your two passwords did not match please try again")
             return render_template('createAccount.html')
-
+        
         #check that username is novel
         userName = request.form.get('username')
         conn = tt.getConn('ovw')
@@ -299,7 +312,10 @@ def createAccount():
             flash("That username already exsists on our server! please try again")
             return render_template('createAccount.html')
         else:
-            uID = tt.addUser(conn, userName, pass1)
+            
+            hashed = bcrypt.hashpw(pass1.encode('utf-8'), bcrypt.gensalt())
+            
+            uID = tt.addUser(conn, userName, hashed)
             flash("Welcome to OTT Agent " + userName + "!")
             session['user'] = userName
             

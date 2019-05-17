@@ -17,7 +17,7 @@ DROP TABLE IF EXISTS user;
 CREATE TABLE user (
     uID int(10) AUTO_INCREMENT,
     username varchar(30) DEFAULT NULL,
-    password varchar(30) DEFAULT NULL,
+    password varchar(60) DEFAULT NULL,
     permission enum('admin','player'),
     PRIMARY KEY (uID)
 ) ENGINE=InnoDB;
