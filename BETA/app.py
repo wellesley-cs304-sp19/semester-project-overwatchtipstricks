@@ -220,7 +220,6 @@ def login():
         else:
             flash("Login successful. Welcome to OTT, Agent " + username +".")
             session['user'] = username
-            session['logged_in'] = True
 
         #if the location str is a digit, we have saved the tipID
         if session['location'].isdigit():
@@ -237,10 +236,9 @@ def logout():
     '''logs out or redirects to homepage with a message if someone
     tries to access the page without being logged in'''
     try:
-        if session['logged_in']:
+        if 'user' in session:
             #remove session information
             session.pop('user');
-            session['logged_in'] = False
             flash("Successfully logged out. Until next time.")
            
             #if the location str is a digit, we have saved the tipID
@@ -248,7 +246,7 @@ def logout():
                 return redirect(url_for("tip",tipID=session['location']))
             return redirect(url_for(session['location']))
         
-        #if 'logged_in' key doesn't exist, that means we are not logged in!
+        #if 'user' key doesnt exist we are not logged in!
         flash("Sorry, you must be logged in to log out. Go figure.")
         return redirect(url_for('home'))
         
@@ -285,7 +283,6 @@ def createAccount():
         else:
             uID = tt.addUser(conn, userName, pass1)
             flash("Welcome to OTT Agent " + userName + "!")
-            session['logged_in'] = True
             session['user'] = userName
             return redirect( url_for('home') )
         
@@ -293,18 +290,26 @@ def createAccount():
     
 @app.route('/user/<userName>')#, methods=['GET','POST'])
 def userPage(userName):
-    if not session['logged_in']: #check that they are logged in
+    if 'user' not in session: #check that they are logged in
         flash("Please log in to view your profile!")
         return redirect( url_for('home') )
     elif session['user'] != userName: #check that they are the user they say they are
         flash("Please log in to view your profile!")
         #logout any stored user info and return to homepage
-        session['logged_in'] = False
         session.pop('user')
         return redirect( url_for('home') )
     else:
         conn = tt.getConn('ovw')
         tips = tt.getTipbyUser(conn, userName)
+        
+        for tip in tips:
+            tip['totalLikes']=tt.tipLikes(conn,tip['tipID'])
+            uID = tt.getuIDFromUser(conn,session['user'])['uID'] #gets the current user's uID
+        
+            #check if the logged in user has liked this specific tip
+            userLikes = tt.checkLikes(conn,tip['tipID'],uID)
+            tip['likeText'] = 'Unlike' if userLikes else 'Like'
+        
         return render_template('userPage.html', tips=tips)
 
 @app.route('/likePost',methods=['POST','GET'])
