@@ -102,7 +102,13 @@ def search():
 
         # print filter_dict
         tips =  tt.getSearchResults(conn, filter_dict)
-  
+        
+        #update filter_dict for display
+        for key, value in filter_dict.iteritems():
+            if value == '%':
+                filter_dict[key] = u'All'
+        filter_dict['searchTerm'] = filter_dict['searchTerm'].strip("%")
+                
         return render_template('search.html', tips=tips,filters=filter_dict)
     return redirect(url_for('home'))
     
