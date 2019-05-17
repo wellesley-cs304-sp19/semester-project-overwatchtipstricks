@@ -46,16 +46,25 @@
                     </td>
                     
                 </tr>
-                <tr id="navButtons"  data-ID={{tip.tipID}}>
+                <tr id="navButtons"  data-ID={{tip.tipID}} >
                     <td>
+                        
                         <a href="/tip/{{tip.tipID}}">
                             <img  src="{{ url_for('static',filename='arrow icon.png')}}" alt="more info icon" align=right style="margin-right:10%" />
                         </a>
                         
-                       <span id="totalLikes">{{tip.totalLikes}}</span>
-                        <form method="POST" action={{url_for('likePost')}}>
-                            <label class="like"> <input type="submit" name="likeButton" value="Like"></label>
-                        </form>
+                        <!--we only want the like form to show up when someone is logged in-->
+                        {% if session['user'] %}
+                            <form method="POST" action={{url_for('likePost')}} align=right style="margin-right:20%">
+                                <span id="totalLikes">{{tip.totalLikes}}</span>
+                                <label class="like"> <input type="submit" name="likeButton" value="{{tip.likeText}}"></label>
+                            </form>
+                            
+                        {%else%}
+                            <!--display the total number of likes without rendering the button. then, say "like" if the total number of likes=1, else say "likes"-->
+                            <div align=right style="margin-right:20%" ><i>{{tip.totalLikes}} {%if tip.totalLikes is eq(1)%} Like {%else%}Likes {%endif%}</i></div>
+                        {% endif  %}
+
                     </td>
                 </tr>
             </table>

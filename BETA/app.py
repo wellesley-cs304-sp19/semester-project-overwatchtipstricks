@@ -16,13 +16,34 @@ app.config['MAX_UPLOAD'] = 16777215
 def home():
     '''Direct to home page'''
     session['location'] = "home"
-    if 'logged_in' not in session:
-        session['logged_in'] = False
 
     conn = tt.getConn('ovw') 
-    tips = tt.getTipsAndLikes(conn)
-    popTip = tt.popularTip(conn)
 
+    #if someone is logged in
+    if 'user' in session:
+        
+        #retrieve tip information with their respective like counts 
+        tips = tt.getTipsAndLikes(conn)
+        uID = tt.getuIDFromUser(conn,session['user'])['uID']
+        
+        # loop through every tip in our tips dictionary and check to see if 
+        #the logged in user has liked the post.
+        for tip in tips:
+
+            #if the user has liked the post, then we want to show the "unlike"
+            #button so the user can undo their like. otherwise, if the user
+            #has not liked a post, show the "like" button so the user has the 
+            #option to like it. tip['likeText'] is accessed in the template
+            #when jinja2 is building the like buttons
+            userLikes = tt.checkLikes(conn,tip['tipID'],uID)
+            tip['likeText'] = 'Unlike' if userLikes else 'Like'
+    
+    #otherwise, if no one is logged in, just retrieve tips with totalLike info
+    else:
+        tips=tt.getTipsAndLikes(conn)
+        
+    popTip = tt.popularTip(conn)
+    
     return render_template('home.html', tips=tips, today=popTip)
 
 
@@ -276,9 +297,9 @@ def likePost():
         #button text is not like, so change it back to like.
         likeButtonText = "Unlike" if likeButtonText=="Like" else "Like"
         
+
         return jsonify({'likeButtonText':likeButtonText, 'newLikes':newLikes,'tipID':tipID})
-    else:
-        flash("Nice try, Sombra. You need to be logged in to like a post.")
+
     
     
 if (__name__ == '__main__'):
