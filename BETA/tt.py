@@ -3,13 +3,18 @@
 import sys
 import MySQLdb
 import datetime
-
+import dbi
 
 def getConn(db):
     conn = MySQLdb.connect(host='localhost',
                            user='ubuntu',
                            passwd='',
                            db=db)
+    conn.set_character_set('utf8')
+    curs = conn.cursor()
+    curs.execute('set names utf8;')
+    curs.execute('set character set utf8;')
+    curs.execute('set character_set_connection=utf8;')
     return conn
 
 def insertPost(conn, tip_dict):
@@ -52,13 +57,19 @@ def getTips(conn):
     '''returns all tips in the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips order by datePosted desc')
-    return curs.fetchall()
+    all = curs.fetchall()
+    for p in all:
+        dbi.row2utf8(p)
+    return all
     
 def getTipsAndLikes(conn):
     '''returns all tips in the database inner joined with their like counts'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute("select a.*,count(b.tipID) as totalLikes from tips as a left join likes as b on a.tipID=b.tipID group by a.tipID order by datePosted desc")
-    return curs.fetchall()
+    all = curs.fetchall()
+    for p in all:
+        dbi.row2utf8(p)
+    return all
     
     
     ################################
@@ -68,10 +79,8 @@ def getTip(conn, tipID):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips where tipID = %s', (tipID,))
     row = curs.fetchone()
-    print "GETTING TIP."
-    print row
-    print "TIP ID:" + str(tipID)
     
+    #safeguard against database error
     #we check to see if 'uID'=None to avoid an error when using getUserFromuID.
     #otherwise, if we try to use getUderFromuID(...)['username'] we run into
     #an error because the key doesn't exist
@@ -79,7 +88,10 @@ def getTip(conn, tipID):
     if row['uID'] is not None:
         userID = getUserFromuID(conn, row['uID'])['username']
     row['user'] = userID
+    
+    dbi.dict2utf8(row)
     return row
+    
     #################################
     
 def getTipbyUser(conn, userName):
@@ -142,6 +154,8 @@ def popularTip(conn):
     row = curs.fetchone()
     userID = getUserFromuID(conn, row['uID'])['username']
     row['user'] = userID
+    
+    dbi.dict2utf8(row)
     return row
     
 def addUser(conn, username, password):
