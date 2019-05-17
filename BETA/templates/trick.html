@@ -4,8 +4,9 @@
 
 {% block content %}
 
-<div id = "detailedTipInfo">
+<div class="tip-list" id = "detailedTipInfo">
     <h2> Trick #{{trick.tipID}}: {{trick.title}} </h2>
+
     <div class = "postingDetails">
         <p>Posted by: {{trick.user}} </p>
         <p>Posted on: </p>
@@ -17,8 +18,24 @@
         <p>Map: {{trick.map}}</p>
     </div>
     <div class = "textAndImage">
-    <p>{{trick.postText}} </p>
+    <p style="margin: 0% 10%">{{trick.postText}} </p>
+    <br>
     <img src="{{url_for('image',tipID=trick['tipID'])}}" alt="No image for: {{trick.title}}">
+ 
+  <!--we only want the like form to show up when someone is logged in-->
+    <span id="navButtons"  data-ID={{trick.tipID}} >
+        {% if session['user'] %}
+            <form method="POST" action={{url_for('likePost')}} align=right style="margin-right:10%">
+                <span id="totalLikes">{{trick.totalLikes}}</span>
+                <label class="like"> <input type="submit" name="likeButton" value="{{trick.likeText}}"></label>
+            </form>
+            
+        {%else%}
+        
+            <!--display the total number of likes without rendering the button. then, say "like" if the total number of likes=1, else say "likes"-->
+            <div align=right style="margin-right:10%" ><i>{{trick.totalLikes}} {%if trick.totalLikes is eq(1)%} Like {%else%}Likes {%endif%}</i></div>
+        {% endif  %}
+        </span >
     </div>
 </div>
 

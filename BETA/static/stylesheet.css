@@ -45,6 +45,8 @@ th{
 .postInfo:hover #postHeader{
     background-color:#f9c054;
 }
+
+
 #postHeader{
     text-align: left;
     background-color:#e8d988;
@@ -133,6 +135,13 @@ th{
     text-align: center;
 }
 
+.center:hover #popTip{
+    background-color: #dadaf2;
+}
+
+.center:hover #popTip #popHeader{
+    background-color:#8a8af7;
+}
 .logout{
     padding: 7px 60px 7px 7px;
     margin-left:20px;

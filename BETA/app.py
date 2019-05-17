@@ -1,11 +1,13 @@
 # coding=utf-8
 
+from threading import Thread, Lock
 from flask import (Flask, url_for, render_template, request, flash, redirect, session, jsonify, Response, send_from_directory)
 import tt, os, imghdr
 from werkzeug import secure_filename
-
 app = Flask(__name__)
+
 app.secret_key = 'Hershel is Awesome'
+lock = Lock()
 
 #max file size for images (same as size of meduim blob which is how they are stored)
 app.config['MAX_UPLOAD'] = 16777215
@@ -175,7 +177,9 @@ def tip(tipID):
     #get all data associated with a tip
     conn = tt.getConn('ovw')
     tip = tt.getTip(conn, tipID)
+
     tip['totalLikes']=tt.tipLikes(conn,tip['tipID'])
+
     
     #note that since this is the first place we check if user is in session,
     #we save the uID and use it later. this is because we conditionally
@@ -320,12 +324,16 @@ def likePost():
         
         likeButtonText = request.form.get('likeButtonText');
         tipID = request.form.get('tipID');
-        
+
          #connect to the database
         conn = tt.getConn('ovw');
         uID=tt.getuIDFromUser(conn, session['user'])['uID']
+        
+        #locking because we check for several things and modify the database
+        lock.acquire()
         tt.setLikes(conn,int(tipID),int(uID));
         newLikes = tt.tipLikes(conn,tipID);
+        lock.release()
         
         #if like buttontext is like, change to unlike. otherwise, the
         #button text is not like, so change it back to like.
