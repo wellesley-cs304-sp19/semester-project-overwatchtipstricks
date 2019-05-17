@@ -45,8 +45,6 @@ def insertComment(conn, comment_dict):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     datePosted = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     # if image and difficulty: 
-    print "INSERTING COMMENT:"
-    print comment_dict
     curs.execute("insert into comments(uID, tipID, commentText, datePosted) values \
                     (%s, %s, %s, %s);",
             (comment_dict['uID'], comment_dict['tipID'], comment_dict['commentText'], datePosted))
@@ -116,7 +114,7 @@ def getSearchResults(conn, filter_dict):
     
 def getPassword(conn,user):
     '''searches for the uID of a user. returns none if the username does not yet exist'''
-    print "IN GET PASSWORD!"
+
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('SELECT password FROM user WHERE username= %s',[user])
     return curs.fetchone()
@@ -185,13 +183,10 @@ def setLikes(conn,tipID,uID):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     
     try:
-        # print "now in. SET LIKES!" 
-        # print "CHECKING IF USER HAS LIKED TIP BEFORE"
-        
+
         # checking to see if we have a record of the user liking the post
         tipUserLikeHistory = checkLikes(conn,tipID,uID)
-        # print "PRINTING USER HISTORY"
-        # print tipUserLikeHistory
+
         
         if tipUserLikeHistory:
             
@@ -210,11 +205,10 @@ def setLikes(conn,tipID,uID):
         return "success"
         
     except Exception as err:
-        print("ERRROR!!!!!" + str(err))
+        print("ERRROR!!!!! in tt.py: " + str(err))
     
     
 if __name__ == '__main__':
     conn= getConn('ovw')
-    #print len(getSearchResults(conn, {'mapName': 'sdfds', 'difficulty': 'All',
-    #'heroName': 'All', 'searchTerm': 'kill'}))
+  
         

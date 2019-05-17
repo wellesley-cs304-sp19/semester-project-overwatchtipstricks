@@ -136,7 +136,7 @@ def search():
         'heroName': request.form.get('heroes'),
         'difficulty': request.form.get('difficulty')}
 
-        # print filter_dict
+     
         tips =  tt.getSearchResults(conn, filter_dict)
         
         #if someone is logged in, get their uID so we can use it later
@@ -229,7 +229,7 @@ def login():
         #returns table row if there is a username/password match
         passwordDict = tt.getPassword(conn,username)
         
-        print passwordDict
+
         
         #either flash an error or flash a success message and update session
         if passwordDict is None:
@@ -237,12 +237,9 @@ def login():
             
         else:
             
-            print "BEFORE PW"
+         
             storedPassword = passwordDict['password']
             
-            print "PASSWORD STUFF"
-            print storedPassword
-            print bcrypt.hashpw(password.encode('utf-8'),storedPassword.encode('utf-8'))
             if bcrypt.hashpw(password.encode('utf-8'),storedPassword.encode('utf-8')) == storedPassword:
                 flash("Login successful. Welcome to OTT, Agent " + username +".")
                 session['user'] = username
