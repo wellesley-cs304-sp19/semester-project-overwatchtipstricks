@@ -24,7 +24,7 @@
  
   <!--we only want the like form to show up when someone is logged in-->
     <span id="navButtons"  data-ID={{trick.tipID}} >
-        {% if session['user'] %}
+        {% if 'user' in session %}
             <form method="POST" action={{url_for('likePost')}} align=right style="margin-right:10%">
                 <span id="totalLikes">{{trick.totalLikes}}</span>
                 <label class="like"> <input type="submit" name="likeButton" value="{{trick.likeText}}"></label>

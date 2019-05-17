@@ -38,7 +38,7 @@
                         </a>
                         
                         <!--we only want the like form to show up when someone is logged in-->
-                        {% if session['user'] %}
+                        {% if 'user' in session %}
                             <form method="POST" action={{url_for('likePost')}} align=right style="margin-right:20%">
                                 <span id="totalLikes">{{tip.totalLikes}}</span>
                                 <label class="like"> <input type="submit" name="likeButton" value="{{tip.likeText}}"></label>
