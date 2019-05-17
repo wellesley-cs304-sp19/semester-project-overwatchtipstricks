@@ -5,12 +5,14 @@
 {% block content %}
 
 <div class="tip-list" id = "detailedTipInfo">
+<<<<<<< HEAD
     <h2> Trick #{{trick.tipID}}: {{trick.title}}</h2>
     <span align=center>
         🌡️{{trick.difficulty}}
         🧑{{trick.hero}}
         🗺️{{trick.map}}
 </span>
+
     <div class = "textAndImage">
     <p style="margin: 0% 10%">{{trick.postText}} </p>
     <br>
@@ -19,10 +21,12 @@
     <br>
     <br>
   <!--we only want the like form to show up when someone is logged in-->
+
     <div id="navButtons"  data-ID={{trick.tipID}} >
 
         {% if session['user'] %}
             <form method="POST" action={{url_for('likePost')}} align=right style="display:inline;margin-left:20%">
+
                 <span id="totalLikes">{{trick.totalLikes}}</span>
                 <label class="like"> <input type="submit" name="likeButton" value="{{trick.likeText}}"></label>
             </form>

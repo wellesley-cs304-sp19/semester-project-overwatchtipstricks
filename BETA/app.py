@@ -43,6 +43,7 @@ def home():
     else:
         tips=tt.getTipsAndLikes(conn)
         
+    #get the tip that was most recently commented on
     popTip = tt.popularTip(conn)
     
     return render_template('home.html', tips=tips, today=popTip)
@@ -66,9 +67,7 @@ def addPost():
         #check that both title and text were filled out
         if title == '':
             flash("Your tip must have a title!")
-            print(text)
             valueText['pText'] = text if text != '' else valueText['pText']
-            print( valueText['pText'])
             return render_template('postTipOrTrick.html', pHolder=valueText)
         if text == '':
             flash("Your tip must have some description!")
@@ -90,8 +89,9 @@ def addPost():
             if fSize > app.config['MAX_UPLOAD']:
                 raise ValueError('File is too large, please upload a smaller image.')
             image = f.read()
-            
         except ValueError as err:
+            valueText['pText'] = text if text != '' else valueText['pText']
+            valueText['pTitle'] = title if title != '' else valueText['pTitle']
             flash('Image Upload Failed {why}'.format(why=err))
             return render_template('postTipOrTrick.html', pHolder=valueText)
         except:
@@ -121,13 +121,12 @@ def search():
     given criteria in the search bar. Fitlers include; map name, hero name, 
     difficulty, any text'''
 
-    #for simplicity, we will not save our search query in the session 
-    #because it is post and not get
+    #if you log in on the search page you will be taken home
     session['location']="home" 
     
     if request.method == 'POST' and request.form['submitSearch'] == 'Search':
         conn = tt.getConn('ovw')
-
+        #get search terms from user
         filter_dict = {'searchTerm' : request.form.get('search'), 
         'mapName': request.form.get('maps'),
         'heroName': request.form.get('heroes'),
@@ -136,14 +135,11 @@ def search():
         # print filter_dict
         tips =  tt.getSearchResults(conn, filter_dict)
         
-        
-        
         #if someone is logged in, get their uID so we can use it later
         if 'user' in session:
             uID = tt.getuIDFromUser(conn,session['user'])['uID']
         
         for tip in tips:
-            
             tip['totalLikes']=tt.tipLikes(conn,tip['tipID'])
             
             # we check to see if the user is in session again
@@ -252,7 +248,7 @@ def logout():
     tries to access the page without being logged in'''
     try:
 
-        if session['user']:
+        if 'user' in session:
             #remove session information
             session.pop('user');
             flash("Successfully logged out. Until next time.")
@@ -276,6 +272,7 @@ def image(tipID):
     conn = tt.getConn('ovw')
     row = tt.getImage(conn, tipID)
     image = row['image']
+    #get the static placeholder image if none was uploaded to database
     if image == 'NULL' or image == None:
         return send_from_directory('static', 'image-placeholder.jpg')
     else:
@@ -351,7 +348,6 @@ def likePost():
         #button text is not like, so change it back to like.
         likeButtonText = "Unlike" if likeButtonText=="Like" else "Like"
         
-
         return jsonify({'likeButtonText':likeButtonText, 'newLikes':newLikes,'tipID':tipID})
 
     

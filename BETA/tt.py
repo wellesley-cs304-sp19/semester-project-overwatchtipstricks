@@ -71,28 +71,13 @@ def getTipsAndLikes(conn):
         dbi.row2utf8(p)
     return all
     
-    
-    ################################
-    #NOTE TO HERSHEL: THIS CURRENTLY USES TO FUNCTION, SHOULD WE NOT DO AN INNERJOIN???
 def getTip(conn, tipID):
     '''Returns a specific tip from the database'''
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
-    curs.execute('select * from tips where tipID = %s', (tipID,))
+    curs.execute('select * from tips,user where tips.uID = user.uID and tipID = %s', (tipID,))
     row = curs.fetchone()
-    
-    #safeguard against database error
-    #we check to see if 'uID'=None to avoid an error when using getUserFromuID.
-    #otherwise, if we try to use getUderFromuID(...)['username'] we run into
-    #an error because the key doesn't exist
-    userID=None
-    if row['uID'] is not None:
-        userID = getUserFromuID(conn, row['uID'])['username']
-    row['user'] = userID
-    
     dbi.dict2utf8(row)
     return row
-    
-    #################################
     
 def getTipbyUser(conn, userName):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
