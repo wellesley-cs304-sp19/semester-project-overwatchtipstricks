@@ -9,7 +9,7 @@
 <p>We are so glad you wish to become an agent!  We hope your gamming improves by leaps and bounds.</p>
 <br>
 
-{% if session['logged_in'] %}
+{% if 'user' in session %}
 
 <p> Hello, Agent {{session['user']}}! You are already logged in. </p> <br>
     <form method="POST" action={{url_for('logout')}}>
@@ -20,9 +20,9 @@
     <form method="POST">
         <div><label for="username">Username: <input type=text name="username"></label></div>
         <br>
-        <div><label for="pass1">Password: <input type=text name="pass1"></label></div>
+        <div><label for="pass1">Password: <input type=password name="pass1"></label></div>
         <br>
-        <div><label for="pass2">Retype Password: <input type=text name="pass2"></label></div>
+        <div><label for="pass2">Retype Password: <input type=password name="pass2"></label></div>
         <br>
         <div><label for="CreateAccount"><input type="submit" name="submit" value="Create Account"></label></div>
     </form>

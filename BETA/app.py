@@ -336,7 +336,6 @@ def likePost():
         #button text is not like, so change it back to like.
         likeButtonText = "Unlike" if likeButtonText=="Like" else "Like"
         
-
         return jsonify({'likeButtonText':likeButtonText, 'newLikes':newLikes,'tipID':tipID})
 
     
