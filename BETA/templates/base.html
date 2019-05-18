@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8'>
+    <html lang="en">
     {% block headstuff %}
     <meta name=author content="Anna Farrell-Sherman and Hershel Carbajal-Rodriguez">
     <title>{% block title %} OverWatch Tips and Tricks {% endblock %}</title>
@@ -19,7 +20,7 @@
 {% with messages = get_flashed_messages() %}
     {% if messages %}
         {% for msg in messages %}
-            <div class="flashMessages"><img src="{{ url_for('static', filename='alert.png') }}" style="width:3%"> {{msg}}</div>
+            <div class="flashMessages"><img src="{{ url_for('static', filename='alert.png') }}" alt="Alert"style="width:3%"> {{msg}}</div>
             <br>
         {% endfor %}
     {% endif %}
@@ -33,21 +34,18 @@
         <div class="searchBar">
         
         <form method="POST" action={{url_for('search')}} enctype="multipart/form-data">
-            <label for="home button"><input type="submit" name="submitSearch" value="Home"></label>
-            <label for="search bar"> <input type="text" name='search' placeholder="Search..."></label>
-            <label for="map dropdown">
-                <span>Map:</span>
+            <input type="submit" name="submitSearch" value="Home">
+            <label> Search: <input type="text" name='search' placeholder="Search..."></label>
+            <label><span>Map:</span>
                 <select id="maps" name="maps"></select>
             </label>
-            <label for="hero dropdown"> 
-                <span>Hero:</span>
+            <label> <span>Hero:</span>
                 <select id="heroes" name = "heroes"> </select>
             </label>
-            <label for="difficulty dropdown">
-                <span> Difficulty:</span>
+            <label><span> Difficulty:</span>
                 <select id="difficulty" name = "difficulty"> </select>
             </label>
-            <label for="searchButton"><input id="searchButton" name="submitSearch" type="submit" value="Search"></label>
+            <input id="searchButton" name="submitSearch" type="submit" value="Search">
         </form>
         </div>
     </tr>
@@ -67,16 +65,16 @@
                 Hello, Agent {{session['user']}}.
                 <p><a href="{{url_for('addPost')}}">Post New Tip</a></p>
                 <p><a href="{{url_for('userPage', userName=session['user'])}}">View My Profile</a></p>
-                <div><label for="logoutButton"><input type="submit" name="submit" value="Logout"></label></div>
+                <div><input type="submit" name="submit" value="Logout"></div>
             </form>
             
             {% else %}
             <form method="POST" action={{url_for('login')}} class="login">
-                <div><label for="loginname">User: <input type=text name="loginname"></label></div>
-                <div><label for="loginpass">Pass: <input type=password name="loginpass"></label></div>
-                <div><label for="loginButton"><input type="submit" name="submit" value="Login"></label></div>
+                <div><label>User: <input type=text name="loginname"></label></div>
+                <div><label>Pass: <input type=password name="loginpass"></label></div>
+                <div><input type="submit" name="submit" value="Login"></div>
                 <br>
-                <div><label for="NewAccountButton">New User? <input type="submit" name="submit" value="Create your account!"></label></div>
+                <div>New User? <input type="submit" name="submit" value="Create your account!"></div>
             </form>
             
             {% endif %}

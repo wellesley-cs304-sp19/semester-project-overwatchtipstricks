@@ -27,8 +27,8 @@
         {% if session['user'] %}
             <form method="POST" action={{url_for('likePost')}} align=right style="display:inline;margin-left:20%">
 
-                <span id="totalLikes">{{trick.totalLikes}}</span>
-                <label class="like"> <input type="submit" name="likeButton" value="{{trick.likeText}}"></label>
+                <label class="like"><span id="totalLikes">{{trick.totalLikes}}</span>
+                    <input type="submit" name="likeButton" value="{{trick.likeText}}"></label>
             </form>
             
         {%else%}
@@ -54,12 +54,11 @@
             </tr>
         {% endfor %}
     </table>
-    <h3>Add a comment:</h3>
     <form id="newComment" method="POST" action={{url_for('tip', tipID=trick.tipID)}} enctype="multipart/form-data" id="commentForm">
     <table align="center"> 
-    <tr><label for="comment box" >
-            <td><textarea name="commentText" rows="10" cols="75" placeholder="Enter comment here...">
-            </textarea></td></tr></label>
+        <tr><label for="commentBox"><h3>Add a comment:</h3></label>
+            <td><textarea id="commentBox" name="commentText" rows="10" cols="75" placeholder="Enter comment here..."></textarea></td>
+        </tr>
         <tr><td><input id="addCommentButton" name="addComment" type="submit" value="Add Comment"></td></tr>
     </table>
 </form>

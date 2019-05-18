@@ -237,8 +237,6 @@ def login():
         #returns table row if there is a username/password match
         passwordDict = tt.getPassword(conn,username)
         
-
-        
         #either flash an error or flash a success message and update session
         if passwordDict is None:
             flash("Incorrect username or password. Please try again.")
@@ -252,7 +250,7 @@ def login():
                 flash("Login successful. Welcome to OTT, Agent " + username +".")
                 session['user'] = username
             else:
-                flash("oh no!")
+                flash("Incorrect username or password. Please try again.")
 
         #if the location str is a digit, we have saved the tipID
         if session['location'].isdigit():
