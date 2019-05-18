@@ -125,6 +125,7 @@ th{
 }
 .popImage {
     height:150px;
+     max-width: 40%;
 }
 
 /*.topSection{*/
