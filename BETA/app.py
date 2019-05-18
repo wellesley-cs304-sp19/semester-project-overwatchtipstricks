@@ -162,6 +162,14 @@ def search():
         filter_dict['searchTerm'] = filter_dict['searchTerm'].strip("%")
         
         return render_template('search.html', tips=tips,filters=filter_dict)
+    
+    #if user clicks on home button take them home
+    #this statement is not technically needed because the method defaults to home below, 
+    # but is here to make the code clearer
+    elif request.method == 'POST' and request.form['submitSearch'] == 'Home':
+        return redirect(url_for('home'))
+        
+    #default to home
     return redirect(url_for('home'))
     
 @app.route('/tip/<tipID>', methods=['GET','POST'])

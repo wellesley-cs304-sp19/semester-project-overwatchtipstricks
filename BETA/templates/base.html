@@ -31,7 +31,9 @@
     
     <tr > <!--search filters -->
         <div class="searchBar">
+        
         <form method="POST" action={{url_for('search')}} enctype="multipart/form-data">
+            <label for="home button"><input type="submit" name="submitSearch" value="Home"></label>
             <label for="search bar"> <input type="text" name='search' placeholder="Search..."></label>
             <label for="map dropdown">
                 <span>Map:</span>
@@ -45,7 +47,7 @@
                 <span> Difficulty:</span>
                 <select id="difficulty" name = "difficulty"> </select>
             </label>
-            <input id="searchButton" name="submitSearch" type="submit" value="Search">
+            <label for="searchButton"><input id="searchButton" name="submitSearch" type="submit" value="Search"></label>
         </form>
         </div>
     </tr>
