@@ -57,7 +57,8 @@ def getTips(conn):
     curs.execute('select * from tips order by datePosted desc')
     all = curs.fetchall()
     for p in all:
-        dbi.row2utf8(p)
+        if 'hero' in p:
+            p['hero']= dbi.utf8(p['hero']) #encoding hero which might have an accent character
     return all
     
 def getTipsAndLikes(conn):
@@ -66,7 +67,8 @@ def getTipsAndLikes(conn):
     curs.execute("select a.*,count(b.tipID) as totalLikes from tips as a left join likes as b on a.tipID=b.tipID group by a.tipID order by datePosted desc")
     all = curs.fetchall()
     for p in all:
-        dbi.row2utf8(p)
+        if 'hero' in p:
+            p['hero']= dbi.utf8(p['hero']) #encoding hero which might have an accent
     return all
     
 def getTip(conn, tipID):
@@ -74,8 +76,8 @@ def getTip(conn, tipID):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     curs.execute('select * from tips,user where tips.uID = user.uID and tipID = %s', (tipID,))
     row = curs.fetchone()
-
-    dbi.dict2utf8(row)
+    
+    row['hero']= dbi.utf8(row['hero']) #encoding hero which might have an accent
     return row
     
 def getTipbyUser(conn, userName):
@@ -145,8 +147,8 @@ def popularTip(conn):
     row = curs.fetchone()
     userID = getUserFromuID(conn, row['uID'])['username']
     row['user'] = userID
-    
-    dbi.dict2utf8(row)
+
+ 
     return row
     
 def addUser(conn, username, password):
